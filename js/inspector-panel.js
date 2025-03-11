@@ -106,181 +106,167 @@ function updateInspectorPanels(data) {
     // Update Box Model tab
     updateBoxModelTab(data);
     
-    // Update Scraping tab if scraping data is available
-    if (data.scrapingData) {
-        updateScrapingTab(data.scrapingData);
-    }
+    // Update Scraping tab
+    updateScrapingTab(data);
 }
 
-// Update HTML tab content
+// Update HTML tab with element data
 function updateHtmlTab(data) {
+    // Update HTML content
+    const htmlContentElement = document.getElementById('htmlContent');
+    htmlContentElement.innerHTML = data.htmlContent;
+    
     // Update hierarchy
     const hierarchyContainer = document.getElementById('hierarchyContainer');
     hierarchyContainer.innerHTML = '';
     
-    if (data.hierarchy && data.hierarchy.length) {
-        data.hierarchy.forEach(item => {
-            const hierarchyItem = document.createElement('div');
-            hierarchyItem.className = 'hierarchy-item';
-            
-            const tagSpan = document.createElement('span');
-            tagSpan.className = 'hierarchy-tag';
-            tagSpan.textContent = item.tagName;
-            hierarchyItem.appendChild(tagSpan);
-            
-            if (item.id) {
-                const idSpan = document.createElement('span');
-                idSpan.className = 'hierarchy-id';
-                idSpan.textContent = `#${item.id}`;
-                hierarchyItem.appendChild(idSpan);
-            }
-            
-            if (item.classes) {
-                const classesSpan = document.createElement('span');
-                classesSpan.className = 'hierarchy-classes';
-                classesSpan.textContent = `.${item.classes.replace(/\s+/g, ' .').trim()}`;
-                hierarchyItem.appendChild(classesSpan);
-            }
-            
-            hierarchyContainer.appendChild(hierarchyItem);
-        });
-    }
-    
-    // Update HTML content
-    document.getElementById('htmlContent').innerHTML = data.html;
+    // Create hierarchy elements
+    data.hierarchy.forEach((item, index) => {
+        const hierarchyItem = document.createElement('div');
+        hierarchyItem.className = 'hierarchy-item';
+        
+        // Add indentation based on depth
+        hierarchyItem.style.paddingLeft = `${index * 15}px`;
+        
+        // Create element representation
+        let elementText = `<span class="hierarchy-tag">${item.tagName}</span>`;
+        if (item.id) {
+            elementText += `<span class="hierarchy-id">#${item.id}</span>`;
+        }
+        if (item.classes) {
+            elementText += `<span class="hierarchy-classes">.${item.classes.replace(/\s+/g, ' .')}</span>`;
+        }
+        
+        hierarchyItem.innerHTML = elementText;
+        
+        // Highlight the selected element
+        if (index === data.hierarchy.length - 1) {
+            hierarchyItem.classList.add('selected');
+        }
+        
+        hierarchyContainer.appendChild(hierarchyItem);
+    });
 }
 
-// Update CSS tab content
+// Update CSS tab with element data
 function updateCssTab(data) {
     const cssPropertiesContainer = document.getElementById('cssPropertiesContainer');
     cssPropertiesContainer.innerHTML = '';
     
-    // Group properties by category
-    const cssCategories = {
-        layout: ['display', 'position', 'top', 'right', 'bottom', 'left', 'float', 'clear', 'z-index', 'flex', 'grid', 'align', 'justify'],
-        typography: ['font', 'text', 'line-height', 'letter-spacing', 'word', 'white-space', 'color'],
-        colors: ['color', 'background', 'opacity', 'filter'],
-        spacing: ['margin', 'padding', 'width', 'height', 'max-', 'min-'],
-        borders: ['border', 'outline', 'box-shadow', 'border-radius']
-    };
+    // Get the active category button
+    const activeCategory = document.querySelector('.category-btn.active');
+    const category = activeCategory ? activeCategory.getAttribute('data-category') : 'all';
     
-    // Create property items
-    if (data.cssProperties) {
-        Object.keys(data.cssProperties).sort().forEach(property => {
-            const value = data.cssProperties[property];
-            
-            // Create property item
-            const propertyItem = document.createElement('div');
-            propertyItem.className = 'property-item';
-            
-            // Determine category
-            let category = 'other';
-            for (const [cat, keywords] of Object.entries(cssCategories)) {
-                if (keywords.some(keyword => property.includes(keyword))) {
-                    category = cat;
-                    break;
-                }
-            }
-            propertyItem.setAttribute('data-category', category);
-            
-            // Create property name
-            const propertyName = document.createElement('div');
-            propertyName.className = 'property-name';
-            propertyName.textContent = property;
-            propertyItem.appendChild(propertyName);
-            
-            // Create property value
-            const propertyValue = document.createElement('div');
-            propertyValue.className = 'property-value';
-            propertyValue.textContent = value;
-            propertyItem.appendChild(propertyValue);
-            
-            cssPropertiesContainer.appendChild(propertyItem);
-        });
+    // Display properties based on category
+    if (category === 'all') {
+        // Display all properties
+        for (const property in data.cssProperties) {
+            addCssProperty(cssPropertiesContainer, property, data.cssProperties[property]);
+        }
+    } else {
+        // Display properties for the selected category
+        const categoryProperties = data.categorizedCss[category];
+        for (const property in categoryProperties) {
+            addCssProperty(cssPropertiesContainer, property, categoryProperties[property]);
+        }
     }
 }
 
-// Update Box Model tab content
-function updateBoxModelTab(data) {
-    if (!data.cssProperties) return;
+// Helper function to add a CSS property to the container
+function addCssProperty(container, name, value) {
+    const propertyItem = document.createElement('div');
+    propertyItem.className = 'property-item';
     
-    // Get box model values
-    const marginTop = data.cssProperties['margin-top'] || '0px';
-    const marginBottom = data.cssProperties['margin-bottom'] || '0px';
-    const borderTop = data.cssProperties['border-top-width'] || '0px';
-    const borderBottom = data.cssProperties['border-bottom-width'] || '0px';
-    const paddingTop = data.cssProperties['padding-top'] || '0px';
-    const paddingBottom = data.cssProperties['padding-bottom'] || '0px';
+    const propertyName = document.createElement('div');
+    propertyName.className = 'property-name';
+    propertyName.textContent = name;
     
-    // Update box model display
-    document.getElementById('marginTop').textContent = marginTop;
-    document.getElementById('marginBottom').textContent = marginBottom;
-    document.getElementById('borderTop').textContent = borderTop;
-    document.getElementById('borderBottom').textContent = borderBottom;
-    document.getElementById('paddingTop').textContent = paddingTop;
-    document.getElementById('paddingBottom').textContent = paddingBottom;
-    document.getElementById('boxWidth').textContent = data.width;
-    document.getElementById('boxHeight').textContent = data.height;
+    const propertyValue = document.createElement('div');
+    propertyValue.className = 'property-value';
+    
+    // Special handling for color values
+    if (name.includes('color') || value.startsWith('rgb') || value.startsWith('#')) {
+        const colorPreview = document.createElement('span');
+        colorPreview.className = 'color-preview';
+        colorPreview.style.backgroundColor = value;
+        propertyValue.appendChild(colorPreview);
+    }
+    
+    const valueText = document.createElement('span');
+    valueText.textContent = value;
+    propertyValue.appendChild(valueText);
+    
+    propertyItem.appendChild(propertyName);
+    propertyItem.appendChild(propertyValue);
+    container.appendChild(propertyItem);
 }
 
-// Update Scraping tab content
-function updateScrapingTab(scrapingData) {
-    // Update selectors
-    document.getElementById('cssSelector').textContent = scrapingData.cssSelector || '';
-    document.getElementById('xpathSelector').textContent = scrapingData.xpath || '';
+// Update Box Model tab with element data
+function updateBoxModelTab(data) {
+    const boxModel = data.boxModel;
     
-    // Update content
-    document.getElementById('innerText').textContent = scrapingData.innerText || '';
-    document.getElementById('textContent').textContent = scrapingData.textContent || '';
+    // Update box model visualization
+    document.getElementById('boxModelMarginTop').textContent = boxModel.margin.top + 'px';
+    document.getElementById('boxModelMarginRight').textContent = boxModel.margin.right + 'px';
+    document.getElementById('boxModelMarginBottom').textContent = boxModel.margin.bottom + 'px';
+    document.getElementById('boxModelMarginLeft').textContent = boxModel.margin.left + 'px';
     
-    // Update attributes
+    document.getElementById('boxModelBorderTop').textContent = boxModel.border.top + 'px';
+    document.getElementById('boxModelBorderRight').textContent = boxModel.border.right + 'px';
+    document.getElementById('boxModelBorderBottom').textContent = boxModel.border.bottom + 'px';
+    document.getElementById('boxModelBorderLeft').textContent = boxModel.border.left + 'px';
+    
+    document.getElementById('boxModelPaddingTop').textContent = boxModel.padding.top + 'px';
+    document.getElementById('boxModelPaddingRight').textContent = boxModel.padding.right + 'px';
+    document.getElementById('boxModelPaddingBottom').textContent = boxModel.padding.bottom + 'px';
+    document.getElementById('boxModelPaddingLeft').textContent = boxModel.padding.left + 'px';
+    
+    document.getElementById('boxModelWidth').textContent = boxModel.width + 'px';
+    document.getElementById('boxModelHeight').textContent = boxModel.height + 'px';
+}
+
+// Update Scraping tab with element data
+function updateScrapingTab(data) {
+    // Update XPath
+    document.getElementById('xpathSelector').textContent = data.xpath;
+    
+    // Update CSS Selector
+    document.getElementById('cssSelector').textContent = data.cssSelector;
+    
+    // Update Text Content
+    document.getElementById('textContent').textContent = data.innerText;
+    
+    // Update HTML Content
+    document.getElementById('htmlContent2').textContent = data.innerHTML;
+    
+    // Update Attributes
     const attributesContainer = document.getElementById('attributesContainer');
     attributesContainer.innerHTML = '';
     
-    if (scrapingData.attributes) {
-        Object.keys(scrapingData.attributes).forEach(attrName => {
-            const attrValue = scrapingData.attributes[attrName];
-            
-            // Create attribute item
-            const attributeItem = document.createElement('div');
-            attributeItem.className = 'attribute-item';
-            
-            // Create attribute name
-            const attributeName = document.createElement('div');
-            attributeName.className = 'attribute-name';
-            attributeName.textContent = attrName;
-            attributeItem.appendChild(attributeName);
-            
-            // Create attribute value
-            const attributeValue = document.createElement('div');
-            attributeValue.className = 'attribute-value';
-            attributeValue.textContent = attrValue;
-            attributeItem.appendChild(attributeValue);
-            
-            // Create copy button
-            const copyButton = document.createElement('button');
-            copyButton.className = 'copy-attribute-btn';
-            copyButton.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"></path></svg>';
-            copyButton.addEventListener('click', function() {
-                copyToClipboard(attrValue);
-                showCopiedFeedback(this);
-            });
-            attributeItem.appendChild(copyButton);
-            
-            attributesContainer.appendChild(attributeItem);
-        });
+    for (const name in data.attributes) {
+        const attributeItem = document.createElement('div');
+        attributeItem.className = 'attribute-item';
+        
+        const attributeName = document.createElement('div');
+        attributeName.className = 'attribute-name';
+        attributeName.textContent = name;
+        
+        const attributeValue = document.createElement('div');
+        attributeValue.className = 'attribute-value';
+        attributeValue.textContent = data.attributes[name];
+        
+        attributeItem.appendChild(attributeName);
+        attributeItem.appendChild(attributeValue);
+        attributesContainer.appendChild(attributeItem);
     }
 }
 
 // Filter CSS properties by category
 function filterCssProperties(category) {
-    const propertyItems = document.querySelectorAll('.property-item');
-    
-    propertyItems.forEach(item => {
-        if (category === 'all' || item.getAttribute('data-category') === category) {
-            item.style.display = 'flex';
-        } else {
-            item.style.display = 'none';
+    // Get the last inspected element data
+    chrome.runtime.sendMessage({ action: 'getLastInspectedElement' }, function(response) {
+        if (response && response.data) {
+            updateCssTab(response.data);
         }
     });
 }

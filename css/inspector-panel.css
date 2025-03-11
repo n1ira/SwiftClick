@@ -246,71 +246,227 @@ pre {
 
 /* Box Model Tab */
 .box-model-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
+    padding: 20px;
 }
 
 .box-model-visualization {
-    position: relative;
-    width: 80%;
-    max-width: 500px;
-}
-
-.box-margin, .box-border, .box-padding, .box-content {
-    position: relative;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
-    border-radius: 4px;
+    margin-bottom: 20px;
 }
 
-.box-margin {
-    background-color: rgba(255, 107, 107, 0.1);
-    padding: 30px;
-}
-
-.box-border {
-    background-color: rgba(255, 204, 0, 0.1);
+.box-model-margin {
+    background-color: rgba(246, 178, 107, 0.2);
     padding: 20px;
+    position: relative;
+    min-width: 200px;
+    min-height: 200px;
 }
 
-.box-padding {
-    background-color: rgba(76, 217, 100, 0.1);
+.box-model-border {
+    background-color: rgba(255, 229, 153, 0.3);
     padding: 20px;
+    position: relative;
 }
 
-.box-content {
-    background-color: rgba(0, 174, 255, 0.1);
-    padding: 30px;
-    min-width: 100px;
-    min-height: 60px;
+.box-model-padding {
+    background-color: rgba(182, 215, 168, 0.3);
+    padding: 20px;
+    position: relative;
 }
 
-.box-label {
+.box-model-content {
+    background-color: rgba(162, 196, 201, 0.3);
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 80px;
+    min-height: 80px;
+}
+
+.box-model-dimensions {
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.box-model-label {
     position: absolute;
     font-size: 12px;
+    color: #555;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 2px 4px;
+    border-radius: 2px;
 }
 
-.margin-top, .margin-bottom, .border-top, .border-bottom, .padding-top, .padding-bottom {
+.margin-top-label {
+    top: 2px;
     left: 50%;
     transform: translateX(-50%);
 }
 
-.margin-top, .border-top, .padding-top {
-    top: 5px;
+.margin-right-label {
+    right: 2px;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
-.margin-bottom, .border-bottom, .padding-bottom {
-    bottom: 5px;
+.margin-bottom-label {
+    bottom: 2px;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
-.box-dimensions {
-    font-size: 14px;
-    color: #00aeff;
-    margin-top: 5px;
+.margin-left-label {
+    left: 2px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.border-top-label {
+    top: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.border-right-label {
+    right: 2px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.border-bottom-label {
+    bottom: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.border-left-label {
+    left: 2px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.padding-top-label {
+    top: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.padding-right-label {
+    right: 2px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.padding-bottom-label {
+    bottom: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.padding-left-label {
+    left: 2px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.box-model-legend {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.legend-color {
+    width: 15px;
+    height: 15px;
+    border-radius: 3px;
+}
+
+.margin-color {
+    background-color: rgba(246, 178, 107, 0.6);
+}
+
+.border-color {
+    background-color: rgba(255, 229, 153, 0.6);
+}
+
+.padding-color {
+    background-color: rgba(182, 215, 168, 0.6);
+}
+
+.content-color {
+    background-color: rgba(162, 196, 201, 0.6);
+}
+
+.legend-text {
+    font-size: 12px;
+    color: #555;
+}
+
+/* CSS Properties Tab */
+.css-categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.category-btn {
+    padding: 5px 10px;
+    border-radius: 15px;
+    border: 1px solid #ddd;
+    background-color: #f5f5f5;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.category-btn:hover {
+    background-color: #e0e0e0;
+}
+
+.category-btn.active {
+    background-color: #4285f4;
+    color: white;
+    border-color: #4285f4;
+}
+
+.property-item {
+    display: flex;
+    padding: 8px 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.property-name {
+    flex: 0 0 40%;
+    color: #881280;
+    font-family: monospace;
+}
+
+.property-value {
+    flex: 1;
+    color: #1a1a1a;
+    font-family: monospace;
+    display: flex;
+    align-items: center;
+}
+
+.color-preview {
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+    margin-right: 8px;
+    border: 1px solid #ddd;
 }
 
 /* Scraping Tab */

@@ -350,6 +350,9 @@
             
             // Show tooltip with element info
             showElementTooltip(event, targetElement);
+            
+            // Store the current hovered element for potential selection
+            highlightElement.dataset.targetElement = getXPath(targetElement);
         }
     }
     
@@ -374,13 +377,32 @@
             
             // Get the data and send to background/popup
             const elementData = getElementData(selectedElement);
+            
+            // Add scraping mode data if active
+            if (scrapingModeActive) {
+                elementData.scrapingData = {
+                    xpath: getXPath(selectedElement),
+                    cssSelector: getCssSelector(selectedElement),
+                    innerText: selectedElement.innerText,
+                    innerHTML: selectedElement.innerHTML,
+                    attributes: getElementAttributes(selectedElement)
+                };
+            }
+            
             chrome.runtime.sendMessage({ 
                 action: 'inspectorData', 
                 data: elementData
             });
             
-            // Deactivate inspector after selection
-            deactivateInspector();
+            // Open inspector panel if not already open
+            chrome.runtime.sendMessage({ action: 'openInspectorPanel' });
+            
+            // Don't deactivate inspector after selection to allow for multiple inspections
+            // Only update the UI to show selection
+            highlightElement.classList.add('selected');
+            setTimeout(() => {
+                highlightElement.classList.remove('selected');
+            }, 1000);
         }
     }
     
@@ -403,20 +425,52 @@
     }
     
     function showElementTooltip(event, element) {
+        // Get element details
         const tagName = element.tagName.toLowerCase();
         const id = element.id ? `#${element.id}` : '';
-        const classes = Array.from(element.classList).map(c => `.${c}`).join('');
+        const classes = element.className ? `.${element.className.replace(/\s+/g, ' .').trim()}` : '';
         
-        let tooltipContent = `<span class="swiftclick-tooltip-tag">${tagName}</span>`;
-        if (id) tooltipContent += `<span class="swiftclick-tooltip-id">${id}</span>`;
-        if (classes) tooltipContent += `<span class="swiftclick-tooltip-class">${classes}</span>`;
-        
-        // Add dimensions to tooltip
+        // Get element dimensions
         const rect = element.getBoundingClientRect();
-        tooltipContent += `<span class="swiftclick-tooltip-dimensions">${Math.round(rect.width)} × ${Math.round(rect.height)}</span>`;
+        const width = Math.round(rect.width);
+        const height = Math.round(rect.height);
         
+        // Create tooltip content
+        let tooltipContent = `
+            <span class="swiftclick-tooltip-tag">${tagName}</span>
+            <span class="swiftclick-tooltip-id">${id}</span>
+            <span class="swiftclick-tooltip-class">${classes}</span>
+            <span class="swiftclick-tooltip-dimensions">${width}×${height}</span>
+        `;
+        
+        // Add scraping mode info if active
+        if (scrapingModeActive) {
+            // Add XPath
+            const xpath = getXPath(element);
+            tooltipContent += `<br><span style="color: #ff9800;">XPath:</span> ${xpath.length > 50 ? xpath.substring(0, 50) + '...' : xpath}`;
+            
+            // Add CSS Selector
+            const cssSelector = getCssSelector(element);
+            tooltipContent += `<br><span style="color: #ff9800;">CSS:</span> ${cssSelector.length > 50 ? cssSelector.substring(0, 50) + '...' : cssSelector}`;
+            
+            // Add text content if available
+            if (element.innerText && element.innerText.trim()) {
+                const text = element.innerText.trim();
+                tooltipContent += `<br><span style="color: #ff9800;">Text:</span> ${text.length > 50 ? text.substring(0, 50) + '...' : text}`;
+            }
+            
+            // Apply scraping mode styles
+            highlightElement.classList.add('swiftclick-scraping-highlight');
+            tooltipElement.classList.add('swiftclick-scraping-tooltip');
+        } else {
+            // Remove scraping mode styles
+            highlightElement.classList.remove('swiftclick-scraping-highlight');
+            tooltipElement.classList.remove('swiftclick-scraping-tooltip');
+        }
+        
+        // Show tooltip
         tooltipElement.innerHTML = tooltipContent;
-        showTooltip(event, null);
+        showTooltip(event);
     }
     
     function showTooltip(event, customText) {
@@ -449,11 +503,53 @@
         // Format CSS properties
         let cssText = '';
         let cssProperties = {};
+        
+        // Organize CSS properties by categories
+        const cssCategories = {
+            layout: ['display', 'position', 'top', 'right', 'bottom', 'left', 'float', 'clear', 'z-index', 'overflow', 'overflow-x', 'overflow-y'],
+            flexbox: ['flex', 'flex-direction', 'flex-wrap', 'flex-flow', 'justify-content', 'align-items', 'align-content', 'order', 'flex-grow', 'flex-shrink', 'flex-basis', 'align-self'],
+            grid: ['grid', 'grid-template-columns', 'grid-template-rows', 'grid-template-areas', 'grid-column-gap', 'grid-row-gap', 'grid-gap', 'grid-auto-columns', 'grid-auto-rows', 'grid-auto-flow', 'grid-column-start', 'grid-column-end', 'grid-row-start', 'grid-row-end', 'grid-column', 'grid-row'],
+            box: ['width', 'height', 'min-width', 'min-height', 'max-width', 'max-height', 'box-sizing', 'margin', 'margin-top', 'margin-right', 'margin-bottom', 'margin-left', 'padding', 'padding-top', 'padding-right', 'padding-bottom', 'padding-left'],
+            border: ['border', 'border-width', 'border-style', 'border-color', 'border-top', 'border-right', 'border-bottom', 'border-left', 'border-radius', 'box-shadow'],
+            background: ['background', 'background-color', 'background-image', 'background-repeat', 'background-position', 'background-size', 'background-attachment', 'background-clip', 'background-origin'],
+            typography: ['color', 'font', 'font-family', 'font-size', 'font-weight', 'font-style', 'font-variant', 'line-height', 'text-align', 'text-decoration', 'text-transform', 'letter-spacing', 'word-spacing', 'white-space', 'vertical-align'],
+            animation: ['transition', 'transition-property', 'transition-duration', 'transition-timing-function', 'transition-delay', 'animation', 'animation-name', 'animation-duration', 'animation-timing-function', 'animation-delay', 'animation-iteration-count', 'animation-direction', 'animation-fill-mode', 'animation-play-state'],
+            other: []
+        };
+        
+        // Categorized CSS properties
+        const categorizedCss = {
+            layout: {},
+            flexbox: {},
+            grid: {},
+            box: {},
+            border: {},
+            background: {},
+            typography: {},
+            animation: {},
+            other: {}
+        };
+        
         for (let i = 0; i < computedStyle.length; i++) {
             const property = computedStyle[i];
             const value = computedStyle.getPropertyValue(property);
             cssText += `${property}: ${value};\n`;
             cssProperties[property] = value;
+            
+            // Categorize the property
+            let categorized = false;
+            for (const category in cssCategories) {
+                if (cssCategories[category].includes(property)) {
+                    categorizedCss[category][property] = value;
+                    categorized = true;
+                    break;
+                }
+            }
+            
+            // If not categorized, add to 'other'
+            if (!categorized) {
+                categorizedCss.other[property] = value;
+            }
         }
         
         // Get clean HTML
@@ -472,41 +568,66 @@
             let elementInfo = {
                 tagName: currentElement.tagName.toLowerCase(),
                 id: currentElement.id || '',
-                classes: Array.from(currentElement.classList).join(' ') || ''
+                classes: Array.from(currentElement.classList).join(' ') || '',
+                innerHTML: currentElement.innerHTML.length > 100 ? 
+                    currentElement.innerHTML.substring(0, 100) + '...' : 
+                    currentElement.innerHTML
             };
             hierarchy.unshift(elementInfo);
             currentElement = currentElement.parentElement;
         }
         
-        // Add scraping-specific data if scraping mode is active
-        let scrapingData = null;
-        if (scrapingModeActive) {
-            scrapingData = {
-                innerText: element.innerText,
-                textContent: element.textContent,
-                attributes: {},
-                xpath: getXPath(element),
-                cssSelector: getCssSelector(element)
-            };
-            
-            // Get all attributes
-            for (let i = 0; i < element.attributes.length; i++) {
-                const attr = element.attributes[i];
-                scrapingData.attributes[attr.name] = attr.value;
-            }
-        }
+        // Add body as the root element
+        hierarchy.unshift({
+            tagName: 'body',
+            id: document.body.id || '',
+            classes: Array.from(document.body.classList).join(' ') || ''
+        });
         
-        return {
-            tagName: element.tagName.toLowerCase(),
-            id: element.id,
-            className: element.className,
+        // Get box model data
+        const boxModel = {
             width: Math.round(rect.width),
             height: Math.round(rect.height),
-            html: htmlContent,
-            css: cssText,
+            margin: {
+                top: parseInt(computedStyle.marginTop),
+                right: parseInt(computedStyle.marginRight),
+                bottom: parseInt(computedStyle.marginBottom),
+                left: parseInt(computedStyle.marginLeft)
+            },
+            border: {
+                top: parseInt(computedStyle.borderTopWidth),
+                right: parseInt(computedStyle.borderRightWidth),
+                bottom: parseInt(computedStyle.borderBottomWidth),
+                left: parseInt(computedStyle.borderLeftWidth)
+            },
+            padding: {
+                top: parseInt(computedStyle.paddingTop),
+                right: parseInt(computedStyle.paddingRight),
+                bottom: parseInt(computedStyle.paddingBottom),
+                left: parseInt(computedStyle.paddingLeft)
+            }
+        };
+        
+        // Return the element data
+        return {
+            tagName: element.tagName.toLowerCase(),
+            id: element.id || '',
+            className: Array.from(element.classList).join(' ') || '',
+            attributes: getElementAttributes(element),
+            width: Math.round(rect.width),
+            height: Math.round(rect.height),
+            x: Math.round(rect.left + window.scrollX),
+            y: Math.round(rect.top + window.scrollY),
+            cssText: cssText,
             cssProperties: cssProperties,
+            categorizedCss: categorizedCss,
+            htmlContent: htmlContent,
             hierarchy: hierarchy,
-            scrapingData: scrapingData
+            boxModel: boxModel,
+            xpath: getXPath(element),
+            cssSelector: getCssSelector(element),
+            innerText: element.innerText,
+            innerHTML: element.innerHTML
         };
     }
     
@@ -574,6 +695,16 @@
             element = element.parentNode;
         }
         return path.join(' > ');
+    }
+    
+    // Helper function to get all attributes of an element
+    function getElementAttributes(element) {
+        const attributes = {};
+        for (let i = 0; i < element.attributes.length; i++) {
+            const attr = element.attributes[i];
+            attributes[attr.name] = attr.value;
+        }
+        return attributes;
     }
     
     // Color Picker Functionality

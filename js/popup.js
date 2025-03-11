@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function loadToggleStates() {
     console.log('Loading toggle states from storage');
     
-    chrome.storage.sync.get(['inspectorActive', 'colorPickerActive'], function(result) {
+    chrome.storage.sync.get(['inspectorActive', 'colorPickerActive', 'scrapingModeActive'], function(result) {
         console.log('Loaded toggle states:', result);
         
         // Set inspector toggle state
@@ -35,6 +35,14 @@ function loadToggleStates() {
             colorPickerToggle.checked = true;
             // Activate color picker if it was active
             activateColorPicker();
+        }
+        
+        // Set scraping mode toggle state
+        const scrapingModeToggle = document.getElementById('scrapingModeToggle');
+        if (scrapingModeToggle && result.scrapingModeActive) {
+            scrapingModeToggle.checked = true;
+            // Activate scraping mode if it was active
+            toggleScrapingMode(true);
         }
     });
 }
@@ -79,6 +87,19 @@ function initToggles() {
         });
     } else {
         console.error('Color picker toggle not found');
+    }
+    
+    // Scraping Mode Toggle
+    const scrapingModeToggle = document.getElementById('scrapingModeToggle');
+    if (scrapingModeToggle) {
+        scrapingModeToggle.addEventListener('change', function() {
+            console.log('Scraping mode toggle:', this.checked);
+            toggleScrapingMode(this.checked);
+            // Save state to storage
+            chrome.storage.sync.set({ scrapingModeActive: this.checked });
+        });
+    } else {
+        console.error('Scraping mode toggle not found');
     }
     
     // Assets Item (clickable)
@@ -213,6 +234,18 @@ function deactivateColorPicker() {
             feature: 'eyedropper',
             enabled: false
         });
+    });
+}
+
+// Toggle scraping mode
+function toggleScrapingMode(enabled) {
+    chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+        if (tabs.length > 0) {
+            chrome.tabs.sendMessage(tabs[0].id, { 
+                action: 'toggleScrapingMode', 
+                enabled: enabled 
+            });
+        }
     });
 }
 

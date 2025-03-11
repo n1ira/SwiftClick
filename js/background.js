@@ -26,6 +26,17 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         sendResponse({ success: true });
     }
     
+    // Open inspector panel when requested
+    else if (message.action === 'openInspectorPanel') {
+        openInspectorPanel();
+        sendResponse({ success: true });
+    }
+    
+    // Get the last inspected element data
+    else if (message.action === 'getLastInspectedElement') {
+        sendResponse({ data: state.lastInspectedElement });
+    }
+    
     // Forward color picker data to the active popup if open
     else if (message.action === 'colorPicked') {
         forwardToActivePopup(message);
@@ -234,4 +245,38 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     if (changeInfo.status === 'complete') {
         // No need to re-inject since we're using content_scripts in manifest
     }
-}); 
+});
+
+// Function to open the inspector panel
+function openInspectorPanel() {
+    // Check if inspector panel is already open
+    if (state.inspectorTabId) {
+        // Focus the existing panel
+        chrome.windows.update(state.inspectorTabId, { focused: true });
+        
+        // Send the last inspected element data to the panel
+        if (state.lastInspectedElement) {
+            chrome.runtime.sendMessage({ 
+                action: 'inspectorData', 
+                data: state.lastInspectedElement 
+            });
+        }
+    } else {
+        // Open a new inspector panel
+        chrome.windows.create({
+            url: chrome.runtime.getURL('html/inspector-panel.html'),
+            type: 'popup',
+            width: 400,
+            height: 600
+        }, (window) => {
+            state.inspectorTabId = window.id;
+            
+            // Listen for window close to reset the state
+            chrome.windows.onRemoved.addListener((windowId) => {
+                if (windowId === state.inspectorTabId) {
+                    state.inspectorTabId = null;
+                }
+            });
+        });
+    }
+} 

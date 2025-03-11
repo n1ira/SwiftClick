@@ -70,23 +70,46 @@
                 <div id="boxModelTab" class="tab-content">
                     <div class="box-model-container">
                         <div class="box-model-visualization">
-                            <div class="box-margin">
-                                <span class="box-label margin-top">margin-top: <span id="marginTop">0</span></span>
-                                <div class="box-border">
-                                    <span class="box-label border-top">border-top: <span id="borderTop">0</span></span>
-                                    <div class="box-padding">
-                                        <span class="box-label padding-top">padding-top: <span id="paddingTop">0</span></span>
-                                        <div class="box-content">
-                                            <span class="box-label content">content</span>
-                                            <div class="box-dimensions">
-                                                <span id="boxWidth">0</span> × <span id="boxHeight">0</span>
+                            <div class="box-model-margin">
+                                <div class="box-model-label margin-top-label" id="boxModelMarginTop">0px</div>
+                                <div class="box-model-label margin-right-label" id="boxModelMarginRight">0px</div>
+                                <div class="box-model-label margin-bottom-label" id="boxModelMarginBottom">0px</div>
+                                <div class="box-model-label margin-left-label" id="boxModelMarginLeft">0px</div>
+                                <div class="box-model-border">
+                                    <div class="box-model-label border-top-label" id="boxModelBorderTop">0px</div>
+                                    <div class="box-model-label border-right-label" id="boxModelBorderRight">0px</div>
+                                    <div class="box-model-label border-bottom-label" id="boxModelBorderBottom">0px</div>
+                                    <div class="box-model-label border-left-label" id="boxModelBorderLeft">0px</div>
+                                    <div class="box-model-padding">
+                                        <div class="box-model-label padding-top-label" id="boxModelPaddingTop">0px</div>
+                                        <div class="box-model-label padding-right-label" id="boxModelPaddingRight">0px</div>
+                                        <div class="box-model-label padding-bottom-label" id="boxModelPaddingBottom">0px</div>
+                                        <div class="box-model-label padding-left-label" id="boxModelPaddingLeft">0px</div>
+                                        <div class="box-model-content">
+                                            <div class="box-model-dimensions">
+                                                <span id="boxModelWidth">0px</span> × <span id="boxModelHeight">0px</span>
                                             </div>
                                         </div>
-                                        <span class="box-label padding-bottom">padding-bottom: <span id="paddingBottom">0</span></span>
                                     </div>
-                                    <span class="box-label border-bottom">border-bottom: <span id="borderBottom">0</span></span>
                                 </div>
-                                <span class="box-label margin-bottom">margin-bottom: <span id="marginBottom">0</span></span>
+                            </div>
+                        </div>
+                        <div class="box-model-legend">
+                            <div class="legend-item">
+                                <div class="legend-color margin-color"></div>
+                                <div class="legend-text">Margin</div>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color border-color"></div>
+                                <div class="legend-text">Border</div>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color padding-color"></div>
+                                <div class="legend-text">Padding</div>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color content-color"></div>
+                                <div class="legend-text">Content</div>
                             </div>
                         </div>
                     </div>
@@ -94,40 +117,38 @@
                 
                 <!-- Scraping Tab -->
                 <div id="scrapingTab" class="tab-content">
-                    <div class="scraping-container">
-                        <div class="scraping-section">
-                            <h3>Element Selectors</h3>
-                            <div class="selector-item">
-                                <div class="selector-label">CSS Selector:</div>
-                                <div class="selector-value" id="cssSelector"></div>
-                                <button class="copy-selector-btn" data-selector="css">Copy</button>
-                            </div>
-                            <div class="selector-item">
-                                <div class="selector-label">XPath:</div>
-                                <div class="selector-value" id="xpathSelector"></div>
-                                <button class="copy-selector-btn" data-selector="xpath">Copy</button>
-                            </div>
+                    <div class="scraping-section">
+                        <h3>Selectors</h3>
+                        <div class="selector-item">
+                            <div class="selector-label">CSS Selector:</div>
+                            <div class="selector-value" id="cssSelector"></div>
+                            <button class="copy-selector-btn" data-selector="css">Copy</button>
                         </div>
-                        
-                        <div class="scraping-section">
-                            <h3>Element Content</h3>
-                            <div class="content-item">
-                                <div class="content-label">Inner Text:</div>
-                                <div class="content-value" id="innerText"></div>
-                                <button class="copy-content-btn" data-content="innerText">Copy</button>
-                            </div>
-                            <div class="content-item">
-                                <div class="content-label">Text Content:</div>
-                                <div class="content-value" id="textContent"></div>
-                                <button class="copy-content-btn" data-content="textContent">Copy</button>
-                            </div>
+                        <div class="selector-item">
+                            <div class="selector-label">XPath:</div>
+                            <div class="selector-value" id="xpathSelector"></div>
+                            <button class="copy-selector-btn" data-selector="xpath">Copy</button>
                         </div>
-                        
-                        <div class="scraping-section">
-                            <h3>Element Attributes</h3>
-                            <div id="attributesContainer" class="attributes-container">
-                                <!-- Attributes will be populated by JavaScript -->
-                            </div>
+                    </div>
+                    
+                    <div class="scraping-section">
+                        <h3>Content</h3>
+                        <div class="content-item">
+                            <div class="content-label">Text Content:</div>
+                            <div class="content-value" id="textContent"></div>
+                            <button class="copy-content-btn" data-content="textContent">Copy</button>
+                        </div>
+                        <div class="content-item">
+                            <div class="content-label">HTML Content:</div>
+                            <div class="content-value" id="htmlContent2"></div>
+                            <button class="copy-content-btn" data-content="htmlContent2">Copy</button>
+                        </div>
+                    </div>
+                    
+                    <div class="scraping-section">
+                        <h3>Attributes</h3>
+                        <div id="attributesContainer" class="attributes-container">
+                            <!-- Attributes will be populated by JavaScript -->
                         </div>
                     </div>
                 </div>

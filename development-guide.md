@@ -27,23 +27,23 @@ This guide provides a step-by-step approach to developing the SwiftClick Chrome 
 - [x] Test communication between popup, background, and content scripts
 
 ### Step 3: Element Inspector Implementation 🔍
-- [ ] Develop element selection mechanism
-  - [ ] Create hover highlight functionality
-  - [ ] Implement click-to-select for DOM elements
-  - [ ] Add toggle switch for inspector mode
-  - [ ] Implement hover inspection (no click required)
-- [ ] Build HTML structure viewer
-  - [ ] Extract and display element HTML
-  - [ ] Show element hierarchy
-- [ ] Implement CSS properties panel
-  - [ ] Display all applied styles
-  - [ ] Show computed styles
-  - [ ] Organize properties by categories
-- [ ] Add Scraping Mode
-  - [ ] Create toggle for Scraping Mode within Inspector
-  - [ ] Display data attributes and other scraping-relevant information
-  - [ ] Show element XPath and CSS selectors for scraping
-  - [ ] Provide copy functionality for scraping data
+- [x] Develop element selection mechanism
+  - [x] Create hover highlight functionality
+  - [x] Implement click-to-select for DOM elements
+  - [x] Add toggle switch for inspector mode
+  - [x] Implement hover inspection (no click required)
+- [x] Build HTML structure viewer
+  - [x] Extract and display element HTML
+  - [x] Show element hierarchy
+- [x] Implement CSS properties panel
+  - [x] Display all applied styles
+  - [x] Show computed styles
+  - [x] Organize properties by categories
+- [x] Add Scraping Mode
+  - [x] Create toggle for Scraping Mode within Inspector
+  - [x] Display data attributes and other scraping-relevant information
+  - [x] Show element XPath and CSS selectors for scraping
+  - [x] Provide copy functionality for scraping data
 
 ### Step 4: Live Editing Capabilities ✏️
 - [ ] Create editable CSS properties interface
