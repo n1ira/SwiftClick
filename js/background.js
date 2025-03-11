@@ -10,6 +10,13 @@ const state = {
     colorPickerTabId: null
 };
 
+// Load state from storage when extension starts
+chrome.storage.sync.get(['inspectorActive', 'colorPickerActive'], function(result) {
+    console.log('Loaded state from storage:', result);
+    state.activeInspector = result.inspectorActive || false;
+    state.activeColorPicker = result.colorPickerActive || false;
+});
+
 // Listen for messages from content scripts and popup
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     // Forward inspector data to the active popup if open
@@ -35,10 +42,14 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     else if (message.action === 'toggleFeature') {
         if (message.feature === 'inspector') {
             state.activeInspector = message.enabled;
+            // Save state to storage
+            chrome.storage.sync.set({ inspectorActive: message.enabled });
             // Update the active tab with the new state
             updateActiveTab(message);
         } else if (message.feature === 'eyedropper') {
             state.activeColorPicker = message.enabled;
+            // Save state to storage
+            chrome.storage.sync.set({ colorPickerActive: message.enabled });
             // Update the active tab with the new state
             updateActiveTab(message);
         } else if (message.feature === 'scrapingMode') {
@@ -98,11 +109,27 @@ chrome.runtime.onInstalled.addListener(() => {
 // Handle context menu clicks
 chrome.contextMenus.onClicked.addListener((info, tab) => {
     if (info.menuItemId === 'swiftclick-inspect') {
-        state.activeInspector = true;
-        chrome.tabs.sendMessage(tab.id, { action: 'activateInspector' });
+        // Toggle inspector mode
+        state.activeInspector = !state.activeInspector;
+        // Save state to storage
+        chrome.storage.sync.set({ inspectorActive: state.activeInspector });
+        // Send message to content script
+        chrome.tabs.sendMessage(tab.id, {
+            action: 'toggleFeature',
+            feature: 'inspector',
+            enabled: state.activeInspector
+        });
     } else if (info.menuItemId === 'swiftclick-pick-color') {
-        state.activeColorPicker = true;
-        chrome.tabs.sendMessage(tab.id, { action: 'activateColorPicker' });
+        // Toggle color picker mode
+        state.activeColorPicker = !state.activeColorPicker;
+        // Save state to storage
+        chrome.storage.sync.set({ colorPickerActive: state.activeColorPicker });
+        // Send message to content script
+        chrome.tabs.sendMessage(tab.id, {
+            action: 'toggleFeature',
+            feature: 'eyedropper',
+            enabled: state.activeColorPicker
+        });
     }
 });
 

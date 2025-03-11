@@ -5,6 +5,12 @@
     // State variables
     let inspectorActive = false;
     let colorPickerActive = false;
+    let assetsActive = false;
+    let responsiveActive = false;
+    let debugActive = false;
+    let seoActive = false;
+    let captureActive = false;
+    let siteStackActive = false;
     let scrapingModeActive = false;
     let highlightElement = null;
     let tooltipElement = null;
@@ -21,42 +27,247 @@
         chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             console.log('Content script received message:', message);
             
-            if (message.action === 'activateInspector') {
-                activateInspector();
-                sendResponse({ success: true });
-            } else if (message.action === 'activateColorPicker') {
-                activateColorPicker();
-                sendResponse({ success: true });
-            } else if (message.action === 'scanAssets') {
-                const assets = scanPageAssets();
-                sendResponse({ assets: assets });
-            } else if (message.action === 'toggleScrapingMode') {
-                scrapingModeActive = message.enabled;
-                sendResponse({ success: true });
-            } else if (message.action === 'toggleFeature') {
-                if (message.feature === 'inspector') {
-                    if (message.enabled) {
-                        activateInspector();
-                    } else {
-                        deactivateInspector();
-                    }
+            switch(message.action) {
+                case 'toggleFeature':
+                    handleToggleFeature(message);
                     sendResponse({ success: true });
-                } else if (message.feature === 'eyedropper') {
-                    if (message.enabled) {
-                        activateColorPicker();
-                    } else {
-                        deactivateColorPicker();
-                    }
+                    break;
+                case 'activateInspector':
+                    activateInspector();
                     sendResponse({ success: true });
-                }
+                    break;
+                case 'deactivateInspector':
+                    deactivateInspector();
+                    sendResponse({ success: true });
+                    break;
+                case 'activateColorPicker':
+                    activateColorPicker();
+                    sendResponse({ success: true });
+                    break;
+                case 'deactivateColorPicker':
+                    deactivateColorPicker();
+                    sendResponse({ success: true });
+                    break;
+                case 'scanAssets':
+                    activateAssets();
+                    sendResponse({ success: true });
+                    break;
+                case 'deactivateAssets':
+                    deactivateAssets();
+                    sendResponse({ success: true });
+                    break;
+                case 'activateResponsiveMode':
+                    activateResponsiveMode();
+                    sendResponse({ success: true });
+                    break;
+                case 'deactivateResponsiveMode':
+                    deactivateResponsiveMode();
+                    sendResponse({ success: true });
+                    break;
+                case 'activateDebugMode':
+                    activateDebugMode();
+                    sendResponse({ success: true });
+                    break;
+                case 'deactivateDebugMode':
+                    deactivateDebugMode();
+                    sendResponse({ success: true });
+                    break;
+                case 'activateSEOMode':
+                    activateSEOMode();
+                    sendResponse({ success: true });
+                    break;
+                case 'deactivateSEOMode':
+                    deactivateSEOMode();
+                    sendResponse({ success: true });
+                    break;
+                case 'activateCaptureMode':
+                    activateCaptureMode();
+                    sendResponse({ success: true });
+                    break;
+                case 'deactivateCaptureMode':
+                    deactivateCaptureMode();
+                    sendResponse({ success: true });
+                    break;
+                case 'activateSiteStackMode':
+                    activateSiteStackMode();
+                    sendResponse({ success: true });
+                    break;
+                case 'deactivateSiteStackMode':
+                    deactivateSiteStackMode();
+                    sendResponse({ success: true });
+                    break;
+                case 'toggleScrapingMode':
+                    scrapingModeActive = message.enabled;
+                    sendResponse({ success: true });
+                    break;
+                // New window actions
+                case 'openAssetsWindow':
+                    openAssetsWindow();
+                    sendResponse({ success: true });
+                    break;
+                case 'openResponsiveWindow':
+                    openResponsiveWindow();
+                    sendResponse({ success: true });
+                    break;
+                case 'openDebugWindow':
+                    openDebugWindow();
+                    sendResponse({ success: true });
+                    break;
+                case 'openSEOWindow':
+                    openSEOWindow();
+                    sendResponse({ success: true });
+                    break;
+                case 'openCaptureWindow':
+                    openCaptureWindow();
+                    sendResponse({ success: true });
+                    break;
+                case 'openSiteStackWindow':
+                    openSiteStackWindow();
+                    sendResponse({ success: true });
+                    break;
             }
+            
             return true; // Keep the message channel open for async responses
         });
+    }
+    
+    // Handle toggle feature message
+    function handleToggleFeature(message) {
+        console.log('Toggling feature:', message.feature, message.enabled);
+        
+        switch(message.feature) {
+            case 'inspector':
+                if (message.enabled) {
+                    activateInspector();
+                } else {
+                    deactivateInspector();
+                }
+                break;
+            case 'eyedropper':
+                if (message.enabled) {
+                    activateColorPicker();
+                } else {
+                    deactivateColorPicker();
+                }
+                break;
+            case 'scrapingMode':
+                scrapingModeActive = message.enabled;
+                break;
+        }
+    }
+    
+    // Window opening functions for non-toggle tools
+    function openAssetsWindow() {
+        console.log('Opening assets window');
+        scanPageAssets();
+        // Create a floating window for assets
+        createFloatingWindow('Assets', 'assets-window');
+    }
+    
+    function openResponsiveWindow() {
+        console.log('Opening responsive window');
+        // Create a floating window for responsive mode
+        createFloatingWindow('Responsive Mode', 'responsive-window');
+    }
+    
+    function openDebugWindow() {
+        console.log('Opening debug window');
+        // Create a floating window for debug mode
+        createFloatingWindow('Debug Tools', 'debug-window');
+    }
+    
+    function openSEOWindow() {
+        console.log('Opening SEO window');
+        // Create a floating window for SEO mode
+        createFloatingWindow('SEO Analysis', 'seo-window');
+    }
+    
+    function openCaptureWindow() {
+        console.log('Opening capture window');
+        // Create a floating window for capture mode
+        createFloatingWindow('Capture Tools', 'capture-window');
+    }
+    
+    function openSiteStackWindow() {
+        console.log('Opening site stack window');
+        // Create a floating window for site stack mode
+        createFloatingWindow('Site Stack Analysis', 'site-stack-window');
+    }
+    
+    // Helper function to create a floating window
+    function createFloatingWindow(title, id) {
+        // Remove any existing window with the same ID
+        const existingWindow = document.getElementById(id);
+        if (existingWindow) {
+            existingWindow.remove();
+        }
+        
+        // Create window container
+        const windowElement = document.createElement('div');
+        windowElement.id = id;
+        windowElement.className = 'swiftclick-floating-window';
+        
+        // Create window header
+        const headerElement = document.createElement('div');
+        headerElement.className = 'swiftclick-window-header';
+        
+        // Create title
+        const titleElement = document.createElement('div');
+        titleElement.className = 'swiftclick-window-title';
+        titleElement.textContent = title;
+        
+        // Create close button
+        const closeButton = document.createElement('div');
+        closeButton.className = 'swiftclick-window-close';
+        closeButton.textContent = '×';
+        closeButton.addEventListener('click', () => {
+            windowElement.remove();
+        });
+        
+        // Create window content
+        const contentElement = document.createElement('div');
+        contentElement.className = 'swiftclick-window-content';
+        contentElement.innerHTML = `<p>This is the ${title} window. Content will be implemented in a future update.</p>`;
+        
+        // Assemble window
+        headerElement.appendChild(titleElement);
+        headerElement.appendChild(closeButton);
+        windowElement.appendChild(headerElement);
+        windowElement.appendChild(contentElement);
+        
+        // Make window draggable
+        let isDragging = false;
+        let offsetX, offsetY;
+        
+        headerElement.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            offsetX = e.clientX - windowElement.getBoundingClientRect().left;
+            offsetY = e.clientY - windowElement.getBoundingClientRect().top;
+        });
+        
+        document.addEventListener('mousemove', (e) => {
+            if (isDragging) {
+                windowElement.style.left = (e.clientX - offsetX) + 'px';
+                windowElement.style.top = (e.clientY - offsetY) + 'px';
+            }
+        });
+        
+        document.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
+        
+        // Add to page
+        document.body.appendChild(windowElement);
+        
+        return windowElement;
     }
     
     // Inspector Functionality
     function activateInspector() {
         if (inspectorActive) return;
+        
+        // Deactivate other tools
+        deactivateAllExcept('inspector');
         
         inspectorActive = true;
         document.body.classList.add('swiftclick-selecting');
@@ -90,6 +301,18 @@
         // Show initial instructions
         showTooltip({ clientX: window.innerWidth / 2, clientY: window.innerHeight / 2 }, 
             'Hover over elements and click to inspect. Press ESC to exit.');
+    }
+    
+    // Helper function to deactivate all tools except the one being activated
+    function deactivateAllExcept(tool) {
+        if (tool !== 'inspector' && inspectorActive) deactivateInspector();
+        if (tool !== 'colorPicker' && colorPickerActive) deactivateColorPicker();
+        if (tool !== 'assets' && assetsActive) deactivateAssets();
+        if (tool !== 'responsive' && responsiveActive) deactivateResponsiveMode();
+        if (tool !== 'debug' && debugActive) deactivateDebugMode();
+        if (tool !== 'seo' && seoActive) deactivateSEOMode();
+        if (tool !== 'capture' && captureActive) deactivateCaptureMode();
+        if (tool !== 'siteStack' && siteStackActive) deactivateSiteStackMode();
     }
     
     function deactivateInspector() {
@@ -357,17 +580,20 @@
     function activateColorPicker() {
         if (colorPickerActive) return;
         
-        colorPickerActive = true;
-        document.body.classList.add('swiftclick-eyedropper-active');
+        // Deactivate other tools
+        deactivateAllExcept('colorPicker');
         
-        // Create color preview element
+        colorPickerActive = true;
+        document.body.classList.add('swiftclick-color-picking');
+        
+        // Create color preview element if it doesn't exist
         if (!colorPreviewElement) {
             colorPreviewElement = document.createElement('div');
             colorPreviewElement.className = 'swiftclick-color-preview';
             document.body.appendChild(colorPreviewElement);
         }
         
-        // Create color info element
+        // Create color info element if it doesn't exist
         if (!colorInfoElement) {
             colorInfoElement = document.createElement('div');
             colorInfoElement.className = 'swiftclick-color-info';
@@ -378,13 +604,17 @@
         document.addEventListener('mousemove', handleColorPickerMouseMove);
         document.addEventListener('click', handleColorPickerClick);
         document.addEventListener('keydown', handleColorPickerKeyDown);
+        
+        // Show initial instructions
+        showTooltip({ clientX: window.innerWidth / 2, clientY: window.innerHeight / 2 }, 
+            'Move cursor over colors and click to pick. Press ESC to exit.');
     }
     
     function deactivateColorPicker() {
         if (!colorPickerActive) return;
         
         colorPickerActive = false;
-        document.body.classList.remove('swiftclick-eyedropper-active');
+        document.body.classList.remove('swiftclick-color-picking');
         
         // Hide elements
         colorPreviewElement.style.display = 'none';
@@ -507,6 +737,36 @@
         return [h * 360, s, l];
     }
     
+    // Assets Functionality
+    function activateAssets() {
+        if (assetsActive) return;
+        
+        // Deactivate other tools
+        deactivateAllExcept('assets');
+        
+        assetsActive = true;
+        
+        // Scan for assets and send to popup
+        const assets = scanPageAssets();
+        chrome.runtime.sendMessage({ 
+            action: 'assetsData', 
+            data: assets 
+        });
+        
+        // Show notification
+        showTooltip({ clientX: window.innerWidth / 2, clientY: window.innerHeight / 2 }, 
+            'Scanning page for assets...');
+    }
+    
+    function deactivateAssets() {
+        if (!assetsActive) return;
+        
+        assetsActive = false;
+        
+        // Hide any asset-related UI elements
+        // ...
+    }
+    
     // Asset Scanner Functionality
     function scanPageAssets() {
         const assets = [];
@@ -570,4 +830,123 @@
         return assets;
     }
     
+    // Responsive Mode Functionality
+    function activateResponsiveMode() {
+        if (responsiveActive) return;
+        
+        // Deactivate other tools
+        deactivateAllExcept('responsive');
+        
+        responsiveActive = true;
+        
+        // Implement responsive mode functionality
+        // This would typically create a resizable viewport or overlay
+        showTooltip({ clientX: window.innerWidth / 2, clientY: window.innerHeight / 2 }, 
+            'Responsive mode activated. Feature coming soon.');
+    }
+    
+    function deactivateResponsiveMode() {
+        if (!responsiveActive) return;
+        
+        responsiveActive = false;
+        
+        // Clean up responsive mode UI elements
+        // ...
+    }
+    
+    // Debug Mode Functionality
+    function activateDebugMode() {
+        if (debugActive) return;
+        
+        // Deactivate other tools
+        deactivateAllExcept('debug');
+        
+        debugActive = true;
+        
+        // Implement debug mode functionality
+        // This would typically show event listeners, network requests, etc.
+        showTooltip({ clientX: window.innerWidth / 2, clientY: window.innerHeight / 2 }, 
+            'Debug mode activated. Feature coming soon.');
+    }
+    
+    function deactivateDebugMode() {
+        if (!debugActive) return;
+        
+        debugActive = false;
+        
+        // Clean up debug mode UI elements
+        // ...
+    }
+    
+    // SEO Mode Functionality
+    function activateSEOMode() {
+        if (seoActive) return;
+        
+        // Deactivate other tools
+        deactivateAllExcept('seo');
+        
+        seoActive = true;
+        
+        // Implement SEO mode functionality
+        // This would typically analyze meta tags, headings, etc.
+        showTooltip({ clientX: window.innerWidth / 2, clientY: window.innerHeight / 2 }, 
+            'SEO analysis mode activated. Feature coming soon.');
+    }
+    
+    function deactivateSEOMode() {
+        if (!seoActive) return;
+        
+        seoActive = false;
+        
+        // Clean up SEO mode UI elements
+        // ...
+    }
+    
+    // Capture Mode Functionality
+    function activateCaptureMode() {
+        if (captureActive) return;
+        
+        // Deactivate other tools
+        deactivateAllExcept('capture');
+        
+        captureActive = true;
+        
+        // Implement capture mode functionality
+        // This would typically allow screenshots of elements or the page
+        showTooltip({ clientX: window.innerWidth / 2, clientY: window.innerHeight / 2 }, 
+            'Capture mode activated. Feature coming soon.');
+    }
+    
+    function deactivateCaptureMode() {
+        if (!captureActive) return;
+        
+        captureActive = false;
+        
+        // Clean up capture mode UI elements
+        // ...
+    }
+    
+    // Site Stack Mode Functionality
+    function activateSiteStackMode() {
+        if (siteStackActive) return;
+        
+        // Deactivate other tools
+        deactivateAllExcept('siteStack');
+        
+        siteStackActive = true;
+        
+        // Implement site stack mode functionality
+        // This would typically analyze technologies used on the page
+        showTooltip({ clientX: window.innerWidth / 2, clientY: window.innerHeight / 2 }, 
+            'Site stack analysis mode activated. Feature coming soon.');
+    }
+    
+    function deactivateSiteStackMode() {
+        if (!siteStackActive) return;
+        
+        siteStackActive = false;
+        
+        // Clean up site stack mode UI elements
+        // ...
+    }
 })(); 

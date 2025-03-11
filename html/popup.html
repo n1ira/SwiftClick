@@ -3,117 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>SwiftClick</title>
     <link rel="stylesheet" href="../css/popup.css">
+    <style>
+        html, body {
+            width: 300px;
+            height: 500px;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <header class="header">
+        <div class="sidebar">
             <div class="logo">
                 <img src="../images/icon48.png" alt="SwiftClick Logo">
-                <h1>SwiftClick</h1>
+                <h1>Hoverify</h1>
             </div>
-        </header>
-        
-        <nav class="tabs">
-            <button class="tab-btn active" data-tab="inspector">Inspector</button>
-            <button class="tab-btn" data-tab="colors">Colors</button>
-            <button class="tab-btn" data-tab="assets">Assets</button>
-            <button class="tab-btn" data-tab="settings">Settings</button>
-        </nav>
-        
-        <main class="content">
-            <section id="inspector" class="tab-content active">
-                <div class="tool-section">
-                    <h2>Element Inspector</h2>
-                    <button id="activateInspector" class="action-btn">Select Element</button>
-                    <div class="inspector-info">
-                        <p>Click the button above to select an element on the page.</p>
-                    </div>
-                </div>
-                <div class="tool-panels">
-                    <div class="panel">
-                        <h3>Visual</h3>
-                        <div class="panel-content" id="visualPanel">
-                            <p>Element properties will appear here.</p>
-                        </div>
-                    </div>
-                    <div class="panel">
-                        <h3>Code</h3>
-                        <div class="panel-content" id="codePanel">
-                            <p>CSS code will appear here.</p>
-                        </div>
-                    </div>
-                    <div class="panel">
-                        <h3>HTML</h3>
-                        <div class="panel-content" id="htmlPanel">
-                            <p>HTML structure will appear here.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
             
-            <section id="colors" class="tab-content">
-                <div class="tool-section">
-                    <h2>Color Picker</h2>
-                    <button id="activateColorPicker" class="action-btn">Pick Color</button>
-                </div>
-                <div class="color-history">
-                    <h3>Recent Colors</h3>
-                    <div class="color-swatches" id="recentColors">
-                        <p>Your picked colors will appear here.</p>
+            <div class="sidebar-tools">
+                <div class="tool-item">
+                    <div class="tool-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2zm0 2a8 8 0 1 0 0 16 8 8 0 0 0 0-16zm0 3a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6z" fill="currentColor"/></svg>
                     </div>
+                    <span>Inspector</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="inspectorToggle">
+                        <span class="toggle-slider"></span>
+                    </label>
                 </div>
-            </section>
+                
+                <div class="tool-item">
+                    <div class="tool-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M12 2c5.522 0 10 4.478 10 10s-4.478 10-10 10S2 17.522 2 12 6.478 2 12 2zm0 2a8 8 0 1 0 0 16 8 8 0 0 0 0-16zm0 12a4 4 0 1 1 0-8 4 4 0 0 1 0 8z" fill="currentColor"/></svg>
+                    </div>
+                    <span>Color Eyedropper</span>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="colorPickerToggle">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                
+                <div class="tool-item clickable" id="assetsItem">
+                    <div class="tool-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M20 5H4v14l9.292-9.294a1 1 0 0 1 1.414 0L20 15.01V5zM2 3.993A1 1 0 0 1 2.992 3h18.016c.548 0 .992.445.992.993v16.014a1 1 0 0 1-.992.993H2.992A.993.993 0 0 1 2 20.007V3.993zM8 11a2 2 0 1 1 0-4 2 2 0 0 1 0 4z" fill="currentColor"/></svg>
+                    </div>
+                    <span>Assets</span>
+                </div>
+                
+                <div class="tool-item clickable" id="responsiveItem">
+                    <div class="tool-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M3 3h18a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm17 8H4v8h16v-8zm0-2V5H4v4h16z" fill="currentColor"/></svg>
+                    </div>
+                    <span>Responsive</span>
+                </div>
+                
+                <div class="tool-item clickable" id="debugItem">
+                    <div class="tool-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16zm-1-5h2v2h-2v-2zm0-8h2v6h-2V7z" fill="currentColor"/></svg>
+                    </div>
+                    <span>Debug</span>
+                </div>
+                
+                <div class="tool-item clickable" id="seoItem">
+                    <div class="tool-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M3.064 7.51A9.996 9.996 0 0 1 12 2c2.695 0 4.959.99 6.69 2.605l-2.867 2.868C14.786 6.482 13.468 5.977 12 5.977c-2.605 0-4.81 1.76-5.595 4.123-.2.6-.314 1.24-.314 1.9 0 .66.114 1.3.314 1.9.786 2.364 2.99 4.123 5.595 4.123 1.345 0 2.49-.355 3.386-.955a4.6 4.6 0 0 0 1.996-3.018H12v-3.868h9.418c.118.654.182 1.336.182 2.045 0 3.046-1.09 5.61-2.982 7.35C16.964 21.105 14.7 22 12 22A9.996 9.996 0 0 1 2 12c0-1.614.386-3.14 1.064-4.49z" fill="currentColor"/></svg>
+                    </div>
+                    <span>SEO</span>
+                </div>
+                
+                <div class="tool-item clickable" id="captureItem">
+                    <div class="tool-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M3 3h2v2H3V3zm4 0h2v2H7V3zm4 0h2v2h-2V3zm4 0h2v2h-2V3zm4 0h2v2h-2V3zm-16 4h2v2H3V7zm4 0h2v2H7V7zm4 0h2v2h-2V7zm4 0h2v2h-2V7zm4 0h2v2h-2V7zm-16 4h2v2H3v-2zm4 0h2v2H7v-2zm4 0h2v2h-2v-2zm4 0h2v2h-2v-2zm4 0h2v2h-2v-2zm-16 4h2v2H3v-2zm4 0h2v2H7v-2zm4 0h2v2h-2v-2zm4 0h2v2h-2v-2zm4 0h2v2h-2v-2zm-16 4h2v2H3v-2zm4 0h2v2H7v-2zm4 0h2v2h-2v-2zm4 0h2v2h-2v-2zm4 0h2v2h-2v-2z" fill="currentColor"/></svg>
+                    </div>
+                    <span>Capture</span>
+                </div>
+                
+                <div class="tool-item clickable" id="siteStackItem">
+                    <div class="tool-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M3 3h18a1 1 0 0 1 1 1v16a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zm1 2v14h16V5H4zm8 10h6v2h-6v-2zm-3.333-3L5.838 9.172l1.415-1.415L11.495 12l-4.242 4.243-1.415-1.415L8.667 12z" fill="currentColor"/></svg>
+                    </div>
+                    <span>Site Stack</span>
+                </div>
+            </div>
             
-            <section id="assets" class="tab-content">
-                <div class="tool-section">
-                    <h2>Page Assets</h2>
-                    <button id="scanAssets" class="action-btn">Scan Page</button>
+            <div class="sidebar-footer">
+                <div class="settings-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"/><path d="M9.954 2.21a9.99 9.99 0 0 1 4.091-.002A3.993 3.993 0 0 0 16 5.07a3.993 3.993 0 0 0 3.457.261A9.99 9.99 0 0 1 21.5 8.876 3.993 3.993 0 0 0 20 12c0 1.264.586 2.391 1.502 3.124a10.043 10.043 0 0 1-2.046 3.543 3.993 3.993 0 0 0-3.456.261 3.993 3.993 0 0 0-1.954 2.86 9.99 9.99 0 0 1-4.091.004A3.993 3.993 0 0 0 8 18.927a3.993 3.993 0 0 0-3.457-.26A9.99 9.99 0 0 1 2.5 15.121 3.993 3.993 0 0 0 4 11.999a3.993 3.993 0 0 0-1.502-3.124 10.043 10.043 0 0 1 2.046-3.543A3.993 3.993 0 0 0 8 5.071a3.993 3.993 0 0 0 1.954-2.86zM12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" fill="currentColor"/></svg>
                 </div>
-                <div class="asset-categories">
-                    <button class="category-btn active" data-category="images">Images</button>
-                    <button class="category-btn" data-category="svg">SVG</button>
-                    <button class="category-btn" data-category="video">Video</button>
-                    <button class="category-btn" data-category="other">Other</button>
-                </div>
-                <div class="asset-gallery" id="assetGallery">
-                    <p>Assets will appear here after scanning.</p>
-                </div>
-                <div class="asset-actions">
-                    <button id="downloadAll" class="action-btn secondary" disabled>Download All</button>
-                </div>
-            </section>
-            
-            <section id="settings" class="tab-content">
-                <div class="settings-section">
-                    <h2>Settings</h2>
-                    <div class="setting-group">
-                        <h3>General</h3>
-                        <div class="setting">
-                            <label for="darkMode">Dark Mode</label>
-                            <input type="checkbox" id="darkMode">
-                        </div>
-                    </div>
-                    <div class="setting-group">
-                        <h3>Inspector</h3>
-                        <div class="setting">
-                            <label for="highlightElements">Highlight Elements on Hover</label>
-                            <input type="checkbox" id="highlightElements" checked>
-                        </div>
-                    </div>
-                    <div class="setting-group">
-                        <h3>About</h3>
-                        <p>SwiftClick v1.0.0</p>
-                        <p>A developer tool for inspecting and modifying web pages.</p>
-                    </div>
-                </div>
-            </section>
-        </main>
-        
-        <footer class="footer">
-            <p>SwiftClick &copy; 2023</p>
-        </footer>
+            </div>
+        </div>
     </div>
     
     <script src="../js/popup.js"></script>

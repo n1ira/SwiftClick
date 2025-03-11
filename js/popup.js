@@ -1,331 +1,272 @@
 // SwiftClick Popup JavaScript
 
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('Popup loaded');
+    
     // Initialize UI
-    initTabs();
+    loadToggleStates();
+    initToggles();
     initDarkMode();
-    initInspector();
-    initColorPicker();
-    initAssetScanner();
     
     // Handle extension version display
-    document.querySelectorAll('.settings-section p').forEach(p => {
-        if (p.textContent.includes('SwiftClick v')) {
-            const manifest = chrome.runtime.getManifest();
-            p.textContent = `SwiftClick v${manifest.version}`;
-        }
-    });
+    const manifest = chrome.runtime.getManifest();
+    const version = manifest.version;
+    console.log('Extension version:', version);
 });
 
-// Tab Functionality
-function initTabs() {
-    const tabButtons = document.querySelectorAll('.tab-btn');
-    const tabContents = document.querySelectorAll('.tab-content');
+// Load toggle states from storage
+function loadToggleStates() {
+    console.log('Loading toggle states from storage');
     
-    tabButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            const targetTab = button.getAttribute('data-tab');
-            
-            // Update tab buttons
-            tabButtons.forEach(btn => btn.classList.remove('active'));
-            button.classList.add('active');
-            
-            // Update tab content
-            tabContents.forEach(content => {
-                content.classList.remove('active');
-                if (content.id === targetTab) {
-                    content.classList.add('active');
-                }
-            });
-        });
+    chrome.storage.sync.get(['inspectorActive', 'colorPickerActive'], function(result) {
+        console.log('Loaded toggle states:', result);
+        
+        // Set inspector toggle state
+        const inspectorToggle = document.getElementById('inspectorToggle');
+        if (inspectorToggle && result.inspectorActive) {
+            inspectorToggle.checked = true;
+            // Activate inspector if it was active
+            activateInspector();
+        }
+        
+        // Set color picker toggle state
+        const colorPickerToggle = document.getElementById('colorPickerToggle');
+        if (colorPickerToggle && result.colorPickerActive) {
+            colorPickerToggle.checked = true;
+            // Activate color picker if it was active
+            activateColorPicker();
+        }
     });
+}
+
+// Toggle Functionality
+function initToggles() {
+    console.log('Initializing toggles');
+    
+    // Inspector Toggle
+    const inspectorToggle = document.getElementById('inspectorToggle');
+    if (inspectorToggle) {
+        inspectorToggle.addEventListener('change', function() {
+            console.log('Inspector toggle:', this.checked);
+            if (this.checked) {
+                activateInspector();
+                // Save state to storage
+                chrome.storage.sync.set({ inspectorActive: true });
+            } else {
+                deactivateInspector();
+                // Save state to storage
+                chrome.storage.sync.set({ inspectorActive: false });
+            }
+        });
+    } else {
+        console.error('Inspector toggle not found');
+    }
+    
+    // Color Picker Toggle
+    const colorPickerToggle = document.getElementById('colorPickerToggle');
+    if (colorPickerToggle) {
+        colorPickerToggle.addEventListener('change', function() {
+            console.log('Color picker toggle:', this.checked);
+            if (this.checked) {
+                activateColorPicker();
+                // Save state to storage
+                chrome.storage.sync.set({ colorPickerActive: true });
+            } else {
+                deactivateColorPicker();
+                // Save state to storage
+                chrome.storage.sync.set({ colorPickerActive: false });
+            }
+        });
+    } else {
+        console.error('Color picker toggle not found');
+    }
+    
+    // Assets Item (clickable)
+    const assetsItem = document.getElementById('assetsItem');
+    if (assetsItem) {
+        assetsItem.addEventListener('click', function() {
+            console.log('Assets item clicked');
+            openAssetsWindow();
+        });
+    } else {
+        console.error('Assets item not found');
+    }
+    
+    // Responsive Item (clickable)
+    const responsiveItem = document.getElementById('responsiveItem');
+    if (responsiveItem) {
+        responsiveItem.addEventListener('click', function() {
+            console.log('Responsive item clicked');
+            openResponsiveWindow();
+        });
+    } else {
+        console.error('Responsive item not found');
+    }
+    
+    // Debug Item (clickable)
+    const debugItem = document.getElementById('debugItem');
+    if (debugItem) {
+        debugItem.addEventListener('click', function() {
+            console.log('Debug item clicked');
+            openDebugWindow();
+        });
+    } else {
+        console.error('Debug item not found');
+    }
+    
+    // SEO Item (clickable)
+    const seoItem = document.getElementById('seoItem');
+    if (seoItem) {
+        seoItem.addEventListener('click', function() {
+            console.log('SEO item clicked');
+            openSEOWindow();
+        });
+    } else {
+        console.error('SEO item not found');
+    }
+    
+    // Capture Item (clickable)
+    const captureItem = document.getElementById('captureItem');
+    if (captureItem) {
+        captureItem.addEventListener('click', function() {
+            console.log('Capture item clicked');
+            openCaptureWindow();
+        });
+    } else {
+        console.error('Capture item not found');
+    }
+    
+    // Site Stack Item (clickable)
+    const siteStackItem = document.getElementById('siteStackItem');
+    if (siteStackItem) {
+        siteStackItem.addEventListener('click', function() {
+            console.log('Site stack item clicked');
+            openSiteStackWindow();
+        });
+    } else {
+        console.error('Site stack item not found');
+    }
+    
+    // Settings Icon
+    const settingsIcon = document.querySelector('.settings-icon');
+    if (settingsIcon) {
+        settingsIcon.addEventListener('click', function() {
+            console.log('Settings icon clicked');
+            // Open settings panel or modal
+            alert('Settings will be implemented in a future update.');
+        });
+    } else {
+        console.error('Settings icon not found');
+    }
 }
 
 // Dark Mode Functionality
 function initDarkMode() {
-    const darkModeToggle = document.getElementById('darkMode');
-    
     // Check saved preference
     chrome.storage.sync.get(['darkMode'], function(result) {
         if (result.darkMode) {
             document.body.classList.add('dark-mode');
-            darkModeToggle.checked = true;
-        }
-    });
-    
-    // Toggle dark mode
-    darkModeToggle.addEventListener('change', function() {
-        if (this.checked) {
-            document.body.classList.add('dark-mode');
-            chrome.storage.sync.set({ darkMode: true });
-        } else {
-            document.body.classList.remove('dark-mode');
-            chrome.storage.sync.set({ darkMode: false });
         }
     });
 }
 
 // Inspector Functionality
-function initInspector() {
-    const activateInspectorBtn = document.getElementById('activateInspector');
-    const highlightElementsToggle = document.getElementById('highlightElements');
-    
-    // Store the highlight preference
-    highlightElementsToggle.addEventListener('change', function() {
-        chrome.storage.sync.set({ highlightElements: this.checked });
-    });
-    
-    // Load saved preference
-    chrome.storage.sync.get(['highlightElements'], function(result) {
-        if (result.highlightElements === undefined) {
-            // Default to true if not set
-            chrome.storage.sync.set({ highlightElements: true });
-        } else {
-            highlightElementsToggle.checked = result.highlightElements;
-        }
-    });
-    
-    // Activate the inspector on button click
-    activateInspectorBtn.addEventListener('click', function() {
-        // Send message to content script to activate inspector mode
-        chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
-            chrome.tabs.sendMessage(tabs[0].id, { action: 'activateInspector' });
-            window.close(); // Close the popup to see the page
+function activateInspector() {
+    // Send message to content script to activate inspector mode
+    chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+        chrome.tabs.sendMessage(tabs[0].id, { 
+            action: 'toggleFeature',
+            feature: 'inspector',
+            enabled: true
         });
-    });
-    
-    // Listen for inspector data from background script
-    chrome.runtime.onMessage.addListener(function(message) {
-        if (message.action === 'inspectorData') {
-            updateInspectorPanels(message.data);
-        }
     });
 }
 
-// Update inspector panels with element data
-function updateInspectorPanels(data) {
-    const visualPanel = document.getElementById('visualPanel');
-    const codePanel = document.getElementById('codePanel');
-    const htmlPanel = document.getElementById('htmlPanel');
-    
-    // This would be populated with actual data from the inspected element
-    if (data) {
-        // Visual panel - properties grouped by category
-        visualPanel.innerHTML = `
-            <div class="property-group">
-                <h4>Dimensions</h4>
-                <div class="property-row">
-                    <span class="property-name">Width:</span>
-                    <span class="property-value">${data.width}px</span>
-                </div>
-                <div class="property-row">
-                    <span class="property-name">Height:</span>
-                    <span class="property-value">${data.height}px</span>
-                </div>
-            </div>
-            <!-- More property groups would go here -->
-        `;
-        
-        // Code panel - CSS
-        codePanel.innerHTML = `
-            <div class="code-block">
-                <pre>${data.css}</pre>
-            </div>
-            <button class="action-btn copy-btn">Copy CSS</button>
-        `;
-        
-        // HTML panel - element structure
-        htmlPanel.innerHTML = `
-            <div class="code-block">
-                <pre>${data.html}</pre>
-            </div>
-            <button class="action-btn copy-btn">Copy HTML</button>
-        `;
-        
-        // Add copy functionality to buttons
-        document.querySelectorAll('.copy-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const pre = this.previousElementSibling.querySelector('pre');
-                navigator.clipboard.writeText(pre.textContent);
-                
-                // Show copied feedback
-                const originalText = this.textContent;
-                this.textContent = 'Copied!';
-                setTimeout(() => {
-                    this.textContent = originalText;
-                }, 1500);
-            });
+function deactivateInspector() {
+    // Send message to content script to deactivate inspector mode
+    chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+        chrome.tabs.sendMessage(tabs[0].id, { 
+            action: 'toggleFeature',
+            feature: 'inspector',
+            enabled: false
         });
-    }
+    });
 }
 
 // Color Picker Functionality
-function initColorPicker() {
-    const activateColorPickerBtn = document.getElementById('activateColorPicker');
-    const recentColorsContainer = document.getElementById('recentColors');
-    
-    // Load saved colors
-    chrome.storage.sync.get(['recentColors'], function(result) {
-        if (result.recentColors && result.recentColors.length > 0) {
-            displayRecentColors(result.recentColors);
-        }
-    });
-    
-    // Activate the color picker on button click
-    activateColorPickerBtn.addEventListener('click', function() {
-        chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
-            chrome.tabs.sendMessage(tabs[0].id, { action: 'activateColorPicker' });
-            window.close(); // Close the popup
+function activateColorPicker() {
+    // Send message to content script to activate color picker mode
+    chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+        chrome.tabs.sendMessage(tabs[0].id, { 
+            action: 'toggleFeature',
+            feature: 'eyedropper',
+            enabled: true
         });
-    });
-    
-    // Listen for color picker data
-    chrome.runtime.onMessage.addListener(function(message) {
-        if (message.action === 'colorPicked') {
-            savePickedColor(message.color);
-        }
     });
 }
 
-// Display recent colors in the popup
-function displayRecentColors(colors) {
-    const recentColorsContainer = document.getElementById('recentColors');
-    recentColorsContainer.innerHTML = ''; // Clear existing content
-    
-    colors.forEach(color => {
-        const colorSwatch = document.createElement('div');
-        colorSwatch.className = 'color-swatch';
-        colorSwatch.style.backgroundColor = color;
-        colorSwatch.title = color;
-        colorSwatch.addEventListener('click', () => {
-            navigator.clipboard.writeText(color);
-            // Show feedback
-            const feedback = document.createElement('span');
-            feedback.className = 'copied-feedback';
-            feedback.textContent = 'Copied!';
-            colorSwatch.appendChild(feedback);
-            setTimeout(() => {
-                feedback.remove();
-            }, 1500);
+function deactivateColorPicker() {
+    // Send message to content script to deactivate color picker mode
+    chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+        chrome.tabs.sendMessage(tabs[0].id, { 
+            action: 'toggleFeature',
+            feature: 'eyedropper',
+            enabled: false
         });
-        
-        recentColorsContainer.appendChild(colorSwatch);
     });
 }
 
-// Save a picked color to history
-function savePickedColor(color) {
-    chrome.storage.sync.get(['recentColors'], function(result) {
-        let colors = result.recentColors || [];
-        
-        // Add color to start, remove duplicates
-        colors = [color, ...colors.filter(c => c !== color)];
-        
-        // Limit to 20 colors
-        if (colors.length > 20) {
-            colors = colors.slice(0, 20);
-        }
-        
-        chrome.storage.sync.set({ recentColors: colors });
+// Window opening functions for non-toggle tools
+function openAssetsWindow() {
+    // Send message to content script to scan for assets and open assets window
+    chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+        chrome.tabs.sendMessage(tabs[0].id, { action: 'openAssetsWindow' });
     });
 }
 
-// Asset Scanner Functionality
-function initAssetScanner() {
-    const scanAssetsBtn = document.getElementById('scanAssets');
-    const assetGallery = document.getElementById('assetGallery');
-    const downloadAllBtn = document.getElementById('downloadAll');
-    const categoryButtons = document.querySelectorAll('.category-btn');
-    
-    let scannedAssets = null;
-    
-    // Category button functionality
-    categoryButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            // Update active button
-            categoryButtons.forEach(btn => btn.classList.remove('active'));
-            button.classList.add('active');
-            
-            // Filter assets if available
-            if (scannedAssets) {
-                const category = button.getAttribute('data-category');
-                displayFilteredAssets(scannedAssets, category);
-            }
-        });
-    });
-    
-    // Scan for assets on button click
-    scanAssetsBtn.addEventListener('click', function() {
-        scanAssetsBtn.disabled = true;
-        scanAssetsBtn.textContent = 'Scanning...';
-        
-        chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
-            chrome.tabs.sendMessage(tabs[0].id, { action: 'scanAssets' }, function(response) {
-                scanAssetsBtn.disabled = false;
-                scanAssetsBtn.textContent = 'Scan Page';
-                
-                if (response && response.assets) {
-                    scannedAssets = response.assets;
-                    const activeCategory = document.querySelector('.category-btn.active').getAttribute('data-category');
-                    displayFilteredAssets(scannedAssets, activeCategory);
-                    
-                    // Enable download button if assets found
-                    if (scannedAssets.length > 0) {
-                        downloadAllBtn.disabled = false;
-                    }
-                }
-            });
-        });
-    });
-    
-    // Download all assets
-    downloadAllBtn.addEventListener('click', function() {
-        if (scannedAssets && scannedAssets.length > 0) {
-            const activeCategory = document.querySelector('.category-btn.active').getAttribute('data-category');
-            const assetsToDownload = activeCategory === 'all' 
-                ? scannedAssets 
-                : scannedAssets.filter(asset => asset.type === activeCategory);
-            
-            chrome.runtime.sendMessage({ 
-                action: 'downloadAssets', 
-                assets: assetsToDownload 
-            });
-        }
+function openResponsiveWindow() {
+    // Send message to content script to open responsive window
+    chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+        chrome.tabs.sendMessage(tabs[0].id, { action: 'openResponsiveWindow' });
     });
 }
 
-// Display filtered assets in the gallery
-function displayFilteredAssets(assets, category) {
-    const assetGallery = document.getElementById('assetGallery');
-    assetGallery.innerHTML = ''; // Clear existing content
-    
-    const filteredAssets = category === 'all' 
-        ? assets 
-        : assets.filter(asset => asset.type === category);
-    
-    if (filteredAssets.length === 0) {
-        assetGallery.innerHTML = '<p>No assets found in this category.</p>';
-        return;
+function openDebugWindow() {
+    // Send message to content script to open debug window
+    chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+        chrome.tabs.sendMessage(tabs[0].id, { action: 'openDebugWindow' });
+    });
+}
+
+function openSEOWindow() {
+    // Send message to content script to open SEO window
+    chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+        chrome.tabs.sendMessage(tabs[0].id, { action: 'openSEOWindow' });
+    });
+}
+
+function openCaptureWindow() {
+    // Send message to content script to open capture window
+    chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+        chrome.tabs.sendMessage(tabs[0].id, { action: 'openCaptureWindow' });
+    });
+}
+
+function openSiteStackWindow() {
+    // Send message to content script to open site stack window
+    chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+        chrome.tabs.sendMessage(tabs[0].id, { action: 'openSiteStackWindow' });
+    });
+}
+
+// Listen for messages from content script or background script
+chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
+    // Handle various messages from content script
+    if (message.action === 'inspectorData') {
+        // Handle inspector data
+    } else if (message.action === 'colorPickerData') {
+        // Handle color picker data
+    } else if (message.action === 'assetsData') {
+        // Handle assets data
     }
-    
-    // Create asset grid
-    const assetGrid = document.createElement('div');
-    assetGrid.className = 'asset-grid';
-    
-    filteredAssets.forEach(asset => {
-        const assetItem = document.createElement('div');
-        assetItem.className = 'asset-item';
-        
-        // TODO: Create appropriate preview based on asset type
-        // For now, just create a text representation
-        assetItem.innerHTML = `
-            <div class="asset-preview">${asset.type}</div>
-            <div class="asset-info">${asset.url.substring(0, 30)}...</div>
-            <button class="asset-download-btn">⬇️</button>
-        `;
-        
-        assetGrid.appendChild(assetItem);
-    });
-    
-    assetGallery.appendChild(assetGrid);
-} 
+}); 
