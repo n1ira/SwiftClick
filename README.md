@@ -4,36 +4,22 @@ SwiftClick is an all-in-one browser extension for web developers and designers. 
 
 ## Features
 
-### Core Inspection Tools
 - **Hover Inspection**: Quickly access HTML and CSS details by hovering over elements, eliminating the need for manual selection.
-- **Element Inspector**: Hover over and select elements on a webpage to view their HTML structure and CSS styles.
-- **Pseudo-Class Inspection**: Easily inspect and edit pseudo-classes like :hover, :focus, and :active, ensuring comprehensive style management.
-- **Element Box Model Visualization**: Visually inspect the padding, margin, border, and size of elements, aiding in layout debugging.
-
-### Editing & Customization
-- **Real-Time Editing**: Modify HTML content, CSS properties, media queries, and animations on-the-fly, allowing for immediate visual feedback.
+- **Real-Time Editing**: Modify HTML content, CSS properties, media queries, and animations on-the-fly with immediate visual feedback.
 - **Visual Style Editor**: Utilize a user-friendly interface to adjust styles, enabling precise design refinements without delving into code.
+- **Pseudo-Class Inspection**: Easily inspect and edit pseudo-classes like :hover, :focus, and :active for comprehensive style management.
 - **Media Query Management**: Access and edit styles across different screen sizes, facilitating responsive design testing and adjustments.
-- **Live CSS Editing**: Modify CSS properties in real-time to see how changes affect the design.
-
-### Color & Typography Tools
-- **Color Eyedropper**: Sample colors from any part of a webpage and get the color values in various formats.
+- **Element Box Model Visualization**: Visually inspect the padding, margin, border, and size of elements, aiding in layout debugging.
 - **Color Palette Extraction**: Retrieve all colors used on a page, assisting in maintaining consistent design aesthetics.
 - **Font Identification**: Determine the fonts applied to each tag, useful for typography analysis and consistency.
-
-### Asset Management
+- **Search Functionality**: Locate elements using tag names, IDs, classes, or CSS selectors, enhancing navigation and editing efficiency.
+- **Scraping Mode**: Special inspector mode that displays data useful for web scraping, including XPaths, selectors, and data attributes.
 - **Asset Extraction**: Extract images, SVGs, videos, and other media from webpages with visual previews.
-- **Copy Functionality**: Easily copy HTML, CSS, or element selectors with a single click.
-
-### Navigation & Testing
-- **Search Functionality**: Locate elements using tag names, IDs, classes, or even CSS selectors, enhancing navigation and editing efficiency.
-- **Responsive Design Testing**: Preview how websites appear at different screen sizes and device configurations.
-
-### Additional Tools
-- **Debug Tools**: Analyze JavaScript events and network requests to identify issues.
-- **SEO Analysis**: Examine metadata, headings, and structured data for search engine optimization.
-- **Site Technology Stack**: Identify frameworks, libraries, and platforms used by websites.
-- **Screenshot Capture**: Take full-page screenshots or capture specific elements.
+- **Responsive Design Tools**: Test how websites look at different screen sizes and device types.
+- **SEO Analysis**: Analyze page structure and content for search engine optimization.
+- **Debug Tools**: Inspect JavaScript events and network requests.
+- **Capture Tools**: Take screenshots of elements, visible area, or entire pages.
+- **Site Stack Analysis**: Identify technologies and frameworks used on websites.
 
 ## Installation (Development Mode)
 
@@ -47,55 +33,47 @@ Since this extension is currently in development, you'll need to load it as an u
 
 ## Usage
 
-### Hover Inspection
+### Hover Inspector
 
-1. Click the SwiftClick icon in your toolbar to open the sidebar
+1. Click the SwiftClick icon in your toolbar to open the extension
 2. Toggle on the "Inspector" switch
-3. Hover over elements on the page to see HTML and CSS details instantly
-4. Toggle off when you're done to prevent interference with normal browsing
+3. Hover over elements on the page to see their HTML and CSS details
+4. Toggle "Scraping Mode" to view data useful for web scraping
 
-### Element Inspector
+### Real-Time Editing
 
-1. With the SwiftClick sidebar open
-2. Use the Element Inspector to click and select specific elements
-3. View detailed properties in the inspector panel
-4. Switch between HTML, CSS, and computed styles views
-
-### Visual Style Editor
-
-1. Select an element on the page
-2. Use the Visual Style Editor controls to adjust properties
-3. See changes applied in real-time
-4. Copy the modified CSS when satisfied
+1. With Inspector active, hover over an element you want to edit
+2. Use the visual editor to modify styles or directly edit HTML/CSS
+3. See changes applied in real-time on the page
 
 ### Color Tools
 
-1. Toggle on the "Color Eyedropper" switch in the sidebar
-2. Click anywhere on the page to sample colors
-3. Use the "Extract Palette" button to find all colors used on the page
-4. Click any color to copy its value in your preferred format
+1. Toggle on the "Color Eyedropper" switch
+2. Hover over any color on the page to sample it
+3. Use "Color Palette" to extract all colors used on the page
 
 ### Asset Extraction
 
-1. Navigate to the "Assets" section in the sidebar
-2. View thumbnails of all detected assets on the page
-3. Filter by type (images, SVG, video, etc.)
-4. Download individual assets or in bulk
+1. Click on the "Assets" option
+2. Browse through the visual previews of images, SVGs, videos, and other media
+3. Download individual assets or in bulk
 
-### Media Query Management
+### Responsive Design Testing
 
-1. Open the "Responsive" section in the sidebar
-2. View all media queries defined on the page
-3. Edit or create new media queries
-4. Test the page at different screen sizes
+1. Click on the "Responsive" option
+2. Select different device presets or set custom dimensions
+3. View how the page responds to different screen sizes
+
+### Additional Tools
+
+- **Debug**: Inspect JavaScript events and network requests
+- **SEO**: Analyze page structure and content for search optimization
+- **Capture**: Take screenshots of elements or pages
+- **Site Stack**: Identify technologies used on the website
 
 ## Keyboard Shortcuts
 
-- **Ctrl+Shift+S** (Windows/Linux) or **Cmd+Shift+S** (Mac): Open SwiftClick sidebar
-- **Esc**: Close active tools or panels
-- **Alt+Click**: Quick element inspection
-- **Shift+E**: Toggle eyedropper tool
-- **Shift+I**: Toggle inspector tool
+- **Ctrl+Shift+S** (Windows/Linux) or **Cmd+Shift+S** (Mac): Open the SwiftClick extension
 
 ## Project Structure
 
@@ -103,11 +81,9 @@ Since this extension is currently in development, you'll need to load it as an u
 SwiftClick/
 ├── css/
 │   ├── content.css    # Styles for on-page elements (inspector, etc.)
-│   ├── sidebar.css    # Styles for the sidebar UI
 │   └── popup.css      # Styles for the popup UI
 ├── html/
-│   ├── sidebar.html   # Main sidebar interface
-│   └── popup.html     # Popup interface
+│   └── popup.html     # Main popup interface
 ├── images/
 │   ├── icon16.png     # 16x16 icon
 │   ├── icon48.png     # 48x48 icon
@@ -115,17 +91,17 @@ SwiftClick/
 ├── js/
 │   ├── background.js  # Background script for extension lifecycle
 │   ├── content.js     # Content script injected into pages
-│   ├── sidebar.js     # JavaScript for the sidebar UI
-│   ├── inspector.js   # Element inspection functionality
-│   ├── color-tools.js # Color extraction and manipulation tools
-│   ├── assets.js      # Asset detection and handling
 │   └── popup.js       # JavaScript for the popup UI
 └── manifest.json      # Extension configuration
 ```
 
 ## UI Design
 
-SwiftClick features a sleek, dark-themed sidebar interface with toggle switches for major features, allowing you to enable only the tools you need. The design is inspired by Hoverify and focuses on providing powerful functionality with minimal visual interference.
+The extension features a sleek sidebar interface similar to Hoverify, with:
+- Toggle switches for Inspector and Color Eyedropper modes
+- Clean, organized sections for different tools
+- Visual previews for assets and colors
+- Intuitive controls for all features
 
 ## Development
 

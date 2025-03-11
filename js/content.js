@@ -5,6 +5,7 @@
     // State variables
     let inspectorActive = false;
     let colorPickerActive = false;
+    let scrapingModeActive = false;
     let highlightElement = null;
     let tooltipElement = null;
     let selectedElement = null;
@@ -18,6 +19,8 @@
     function init() {
         // Listen for messages from the popup or background script
         chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+            console.log('Content script received message:', message);
+            
             if (message.action === 'activateInspector') {
                 activateInspector();
                 sendResponse({ success: true });
@@ -27,6 +30,25 @@
             } else if (message.action === 'scanAssets') {
                 const assets = scanPageAssets();
                 sendResponse({ assets: assets });
+            } else if (message.action === 'toggleScrapingMode') {
+                scrapingModeActive = message.enabled;
+                sendResponse({ success: true });
+            } else if (message.action === 'toggleFeature') {
+                if (message.feature === 'inspector') {
+                    if (message.enabled) {
+                        activateInspector();
+                    } else {
+                        deactivateInspector();
+                    }
+                    sendResponse({ success: true });
+                } else if (message.feature === 'eyedropper') {
+                    if (message.enabled) {
+                        activateColorPicker();
+                    } else {
+                        deactivateColorPicker();
+                    }
+                    sendResponse({ success: true });
+                }
             }
             return true; // Keep the message channel open for async responses
         });
@@ -166,6 +188,10 @@
         if (id) tooltipContent += `<span class="swiftclick-tooltip-id">${id}</span>`;
         if (classes) tooltipContent += `<span class="swiftclick-tooltip-class">${classes}</span>`;
         
+        // Add dimensions to tooltip
+        const rect = element.getBoundingClientRect();
+        tooltipContent += `<span class="swiftclick-tooltip-dimensions">${Math.round(rect.width)} × ${Math.round(rect.height)}</span>`;
+        
         tooltipElement.innerHTML = tooltipContent;
         showTooltip(event, null);
     }
@@ -199,10 +225,12 @@
         
         // Format CSS properties
         let cssText = '';
+        let cssProperties = {};
         for (let i = 0; i < computedStyle.length; i++) {
             const property = computedStyle[i];
             const value = computedStyle.getPropertyValue(property);
             cssText += `${property}: ${value};\n`;
+            cssProperties[property] = value;
         }
         
         // Get clean HTML
@@ -214,6 +242,37 @@
             .replace(/\s+/g, ' ')
             .replace(/&lt;([\/\w]+)(&gt;|\s)/g, '&lt;<span style="color:#3498db;">$1</span>$2');
         
+        // Get element hierarchy
+        let hierarchy = [];
+        let currentElement = element;
+        while (currentElement && currentElement !== document.body) {
+            let elementInfo = {
+                tagName: currentElement.tagName.toLowerCase(),
+                id: currentElement.id || '',
+                classes: Array.from(currentElement.classList).join(' ') || ''
+            };
+            hierarchy.unshift(elementInfo);
+            currentElement = currentElement.parentElement;
+        }
+        
+        // Add scraping-specific data if scraping mode is active
+        let scrapingData = null;
+        if (scrapingModeActive) {
+            scrapingData = {
+                innerText: element.innerText,
+                textContent: element.textContent,
+                attributes: {},
+                xpath: getXPath(element),
+                cssSelector: getCssSelector(element)
+            };
+            
+            // Get all attributes
+            for (let i = 0; i < element.attributes.length; i++) {
+                const attr = element.attributes[i];
+                scrapingData.attributes[attr.name] = attr.value;
+            }
+        }
+        
         return {
             tagName: element.tagName.toLowerCase(),
             id: element.id,
@@ -221,8 +280,77 @@
             width: Math.round(rect.width),
             height: Math.round(rect.height),
             html: htmlContent,
-            css: cssText
+            css: cssText,
+            cssProperties: cssProperties,
+            hierarchy: hierarchy,
+            scrapingData: scrapingData
         };
+    }
+    
+    // Helper function to get XPath for an element
+    function getXPath(element) {
+        if (element.id !== '') {
+            return `//*[@id="${element.id}"]`;
+        }
+        
+        if (element === document.body) {
+            return '/html/body';
+        }
+        
+        let ix = 0;
+        const siblings = element.parentNode.childNodes;
+        
+        for (let i = 0; i < siblings.length; i++) {
+            const sibling = siblings[i];
+            
+            if (sibling === element) {
+                return getXPath(element.parentNode) + '/' + element.tagName.toLowerCase() + '[' + (ix + 1) + ']';
+            }
+            
+            if (sibling.nodeType === 1 && sibling.tagName === element.tagName) {
+                ix++;
+            }
+        }
+    }
+    
+    // Helper function to get a unique CSS selector for an element
+    function getCssSelector(element) {
+        if (element.id) {
+            return '#' + element.id;
+        }
+        
+        // Try to build a selector with classes
+        if (element.className) {
+            const classes = element.className.split(/\s+/).filter(c => c);
+            if (classes.length > 0) {
+                const selector = '.' + classes.join('.');
+                // Check if this selector is unique
+                if (document.querySelectorAll(selector).length === 1) {
+                    return selector;
+                }
+            }
+        }
+        
+        // Build a selector with the element's position in the DOM
+        let path = [];
+        while (element && element.nodeType === Node.ELEMENT_NODE) {
+            let selector = element.nodeName.toLowerCase();
+            if (element.id) {
+                selector += '#' + element.id;
+                path.unshift(selector);
+                break;
+            } else {
+                let sibling = element;
+                let nth = 1;
+                while (sibling = sibling.previousElementSibling) {
+                    if (sibling.nodeName.toLowerCase() === selector) nth++;
+                }
+                if (nth > 1) selector += `:nth-of-type(${nth})`;
+            }
+            path.unshift(selector);
+            element = element.parentNode;
+        }
+        return path.join(' > ');
     }
     
     // Color Picker Functionality

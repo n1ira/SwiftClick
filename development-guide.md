@@ -30,6 +30,8 @@ This guide provides a step-by-step approach to developing the SwiftClick Chrome 
 - [ ] Develop element selection mechanism
   - [ ] Create hover highlight functionality
   - [ ] Implement click-to-select for DOM elements
+  - [ ] Add toggle switch for inspector mode
+  - [ ] Implement hover inspection (no click required)
 - [ ] Build HTML structure viewer
   - [ ] Extract and display element HTML
   - [ ] Show element hierarchy
@@ -37,114 +39,69 @@ This guide provides a step-by-step approach to developing the SwiftClick Chrome 
   - [ ] Display all applied styles
   - [ ] Show computed styles
   - [ ] Organize properties by categories
-- [ ] Implement hover inspection mode
-  - [ ] Add toggle switch for enabling/disabling hover inspection
-  - [ ] Show HTML and CSS details on hover without clicking
-- [ ] Implement a "Scraping Mode" that is a sub-option toggle for inspector mode
-  - [ ] When this mode is enabled all info that is useful to get an elements info to use for scraping should be displayed instead of the normal Inspector mode info.
+- [ ] Add Scraping Mode
+  - [ ] Create toggle for Scraping Mode within Inspector
+  - [ ] Display data attributes and other scraping-relevant information
+  - [ ] Show element XPath and CSS selectors for scraping
+  - [ ] Provide copy functionality for scraping data
 
 ### Step 4: Live Editing Capabilities ✏️
 - [ ] Create editable CSS properties interface
   - [ ] Implement direct property editing
   - [ ] Add color pickers and unit selectors
 - [ ] Develop real-time preview of changes
+  - [ ] Support HTML content editing
+  - [ ] Enable CSS property modifications
+  - [ ] Allow media query editing
+  - [ ] Support animation editing
+- [ ] Implement Visual Style Editor
+  - [ ] Create user-friendly interface for style adjustments
+  - [ ] Add sliders, color pickers, and dropdowns for common properties
+  - [ ] Provide real-time visual feedback
 - [ ] Implement copy functionality for:
   - [ ] Full CSS code
   - [ ] Modified properties only
   - [ ] Element selectors
-- [ ] Enable HTML content editing
-  - [ ] Edit HTML content directly
-  - [ ] See changes in real-time
-- [ ] Add media query editing capabilities
-  - [ ] Display media queries
-  - [ ] Allow modification of media query rules
-- [ ] Implement animation editing
-  - [ ] Display CSS animations
-  - [ ] Allow modification of animation properties
 
-### Step 5: Visual Style Editor Implementation 🖌️
-- [ ] Develop user-friendly interface for style editing
-  - [ ] Create sliders, color pickers, and dropdowns
-  - [ ] Organize controls by property type
-- [ ] Implement direct visual manipulation
-  - [ ] Resize elements with drag handles
-  - [ ] Adjust margins/padding visually
-- [ ] Add preset style options
-  - [ ] Common CSS patterns
-  - [ ] Typography presets
-  - [ ] Layout presets
+### Step 5: Advanced Style Inspection & Editing 🎭
+- [ ] Implement Pseudo-Class Inspection
+  - [ ] Add support for :hover, :focus, :active states
+  - [ ] Create UI for toggling between pseudo-classes
+  - [ ] Enable editing of pseudo-class styles
+- [ ] Develop Media Query Management
+  - [ ] Display all media queries on the page
+  - [ ] Allow editing of media query conditions
+  - [ ] Provide responsive design preview
+- [ ] Create Element Box Model Visualization
+  - [ ] Display visual representation of margin, border, padding
+  - [ ] Show element dimensions
+  - [ ] Allow direct editing of box model properties
 
-### Step 6: Pseudo-Class Inspection & Management 🔄
-- [ ] Implement pseudo-class state toggling
-  - [ ] :hover simulation
-  - [ ] :focus simulation
-  - [ ] :active simulation
-- [ ] Create pseudo-class style editor
-  - [ ] Display pseudo-class specific styles
-  - [ ] Allow editing of pseudo-class styles
-- [ ] Add visual indicators for pseudo-class states
-
-### Step 7: Media Query Management Tools 📱
-- [ ] Create media query overview panel
-  - [ ] List all media queries on the page
-  - [ ] Show which elements are affected
-- [ ] Implement media query testing
-  - [ ] Simulate different screen sizes
-  - [ ] Preview responsive behavior
-- [ ] Develop media query editor
-  - [ ] Add, modify, or remove media queries
-  - [ ] Edit styles within media queries
-
-### Step 8: Element Box Model Visualization 📏
-- [ ] Create visual box model display
-  - [ ] Show content, padding, border, and margin
-  - [ ] Display dimensions for each box part
-- [ ] Implement interactive box model editor
-  - [ ] Change values by clicking and dragging
-  - [ ] Update in real-time
-- [ ] Add box model measurement tools
-  - [ ] Measure distances between elements
-  - [ ] Display alignment guides
-
-### Step 9: Color Tools Development 🎨
+### Step 6: Color Tools Development 🎨
 - [ ] Implement eyedropper tool
   - [ ] Create color picking mechanism
   - [ ] Display color in multiple formats (HEX, RGB, HSL)
+  - [ ] Add toggle switch for color eyedropper mode
 - [ ] Develop color history feature
   - [ ] Store recently picked colors
   - [ ] Allow copying color values
 - [ ] Add color manipulation tools (lighten/darken, etc.)
-- [ ] Create color palette extraction
+- [ ] Implement Color Palette Extraction
   - [ ] Scan page for all used colors
   - [ ] Group similar colors
-  - [ ] Show color usage statistics
-- [ ] Add toggle switch for color eyedropper mode
+  - [ ] Allow export of color palette
 
-### Step 10: Font Identification & Typography Tools 🔤
-- [ ] Implement font detection mechanism
-  - [ ] Identify fonts used on the page
-  - [ ] Group elements by font family
-- [ ] Create font information panel
-  - [ ] Show font details (family, size, weight, etc.)
-  - [ ] Display font usage statistics
-- [ ] Develop font comparison tools
-  - [ ] Compare fonts side by side
-  - [ ] Suggest alternative fonts
+### Step 7: Font & Typography Tools 🔤
+- [ ] Implement Font Identification
+  - [ ] Detect fonts used on the page
+  - [ ] Display font information (family, size, weight, etc.)
+  - [ ] Group elements by font usage
+- [ ] Create Typography Analysis
+  - [ ] Analyze text readability
+  - [ ] Check contrast ratios
+  - [ ] Suggest typography improvements
 
-### Step 11: Search & Navigation Functionality 🔍
-- [ ] Implement element search tools
-  - [ ] Search by tag name
-  - [ ] Search by ID
-  - [ ] Search by class
-  - [ ] Search by CSS selector
-- [ ] Create search results navigation
-  - [ ] Highlight matching elements
-  - [ ] Jump between search results
-- [ ] Add element tree navigation
-  - [ ] Show DOM hierarchy
-  - [ ] Allow navigation through parent/child relationships
-
-### Step 12: Asset Extraction Features 📦
+### Step 8: Asset Extraction Features 📦
 - [ ] Create asset detection mechanism
   - [ ] Images
   - [ ] SVGs
@@ -152,61 +109,66 @@ This guide provides a step-by-step approach to developing the SwiftClick Chrome 
   - [ ] Fonts
   - [ ] Favicons
 - [ ] Implement asset preview functionality
-  - [ ] Show thumbnails of actual assets
-  - [ ] Include metadata (dimensions, file size)
+  - [ ] Show visual previews of assets
+  - [ ] Display asset metadata
 - [ ] Develop download capabilities
   - [ ] Individual asset download
   - [ ] Bulk download options
   - [ ] Format conversion where applicable
 
-### Step 13: Debug Tools Implementation 🐞
-- [ ] Develop JavaScript debugging helpers
-  - [ ] Event listener inspection
-  - [ ] Stack trace visualization
-- [ ] Implement network request monitoring
-  - [ ] Show AJAX requests
+### Step 9: Search & Navigation Tools 🔎
+- [ ] Implement Element Search
+  - [ ] Search by tag name
+  - [ ] Search by ID
+  - [ ] Search by class
+  - [ ] Search by CSS selector
+- [ ] Create DOM Navigation Tools
+  - [ ] Visualize DOM tree
+  - [ ] Quick navigation between related elements
+  - [ ] Highlight search results on page
+
+### Step 10: Responsive Design Tools 📱
+- [ ] Implement Responsive Mode
+  - [ ] Preview page at different screen sizes
+  - [ ] Test media query breakpoints
+  - [ ] Simulate different devices
+
+### Step 11: Debug Tools 🐛
+- [ ] Create JavaScript Event Listener Inspector
+  - [ ] Show all event listeners on elements
+  - [ ] Allow enabling/disabling of events
+- [ ] Implement Network Request Viewer
+  - [ ] Monitor AJAX requests
   - [ ] Display request/response details
-- [ ] Create performance profiling tools
-  - [ ] Identify slow-rendering elements
-  - [ ] Suggest optimization strategies
 
-### Step 14: SEO Analysis Tools 📈
-- [ ] Implement SEO metadata inspection
-  - [ ] Analyze title, description, keywords
-  - [ ] Check canonical links
-- [ ] Create accessibility checker
-  - [ ] Identify a11y issues
-  - [ ] Suggest improvements
-- [ ] Develop structured data viewer
-  - [ ] Show schema.org markup
-  - [ ] Validate structured data
+### Step 12: SEO Analysis Tools 📊
+- [ ] Develop SEO Checker
+  - [ ] Analyze meta tags
+  - [ ] Check heading structure
+  - [ ] Evaluate image alt attributes
+  - [ ] Assess link quality
 
-### Step 15: Site Technology Stack Analyzer 🔧
-- [ ] Implement technology detection
+### Step 13: Capture & Export Tools 📷
+- [ ] Implement Screenshot Functionality
+  - [ ] Capture visible area
+  - [ ] Capture full page
+  - [ ] Capture selected element
+- [ ] Create Export Options
+  - [ ] Export as PNG/JPG
+  - [ ] Copy to clipboard
+  - [ ] Save to local storage
+
+### Step 14: Site Stack Analysis 🧰
+- [ ] Implement Technology Detection
   - [ ] Identify frameworks and libraries
   - [ ] Detect CMS platforms
-- [ ] Create technology information panel
-  - [ ] Show version details
-  - [ ] Link to documentation
-- [ ] Develop dependency map
-  - [ ] Visualize technology relationships
-  - [ ] Show loading sequence
+  - [ ] Analyze third-party services
 
-### Step 16: Capture & Screenshot Tools 📸
-- [ ] Implement full-page screenshot capability
-  - [ ] Capture entire page
-  - [ ] Support various export formats
-- [ ] Create element screenshot tools
-  - [ ] Capture specific elements
-  - [ ] Include padding/margin options
-- [ ] Develop annotation capabilities
-  - [ ] Add notes to screenshots
-  - [ ] Include measurements and guides
-
-### Step 17: Performance & Testing 🧪
+### Step 15: Performance & Testing 🧪
 - [ ] Conduct cross-browser compatibility testing
   - [ ] Chrome
   - [ ] Edge
+  - [ ] Firefox (if applicable)
 - [ ] Optimize extension performance
   - [ ] Reduce memory usage
   - [ ] Minimize CPU impact
@@ -216,24 +178,14 @@ This guide provides a step-by-step approach to developing the SwiftClick Chrome 
   - [ ] Complex web applications
   - [ ] Responsive designs
 
-### Step 18: UI Redesign & Toggle System 🎛️
-- [ ] Implement Hoverify-like sidebar interface
-  - [ ] Dark theme design
-  - [ ] Collapsible sections
-- [ ] Create toggle switch system
-  - [ ] Add on/off toggles for each major feature
-  - [ ] Persist toggle state between sessions
-- [ ] Improve visual hierarchy
-  - [ ] Clear icons for each feature
-  - [ ] Consistent styling
-
-### Step 19: Documentation & Polishing 📝
+### Step 16: Documentation & Polishing 📝
 - [ ] Create comprehensive user documentation
   - [ ] Feature explanations
   - [ ] Usage examples
   - [ ] Troubleshooting guide
 - [ ] Polish UI/UX
-  - [ ] Refine visual design
+  - [ ] Refine visual design to match Hoverify-style sidebar
+  - [ ] Implement toggle switches for inspector and color picker
   - [ ] Improve usability
   - [ ] Add animations/transitions
 - [ ] Implement user preferences/settings
@@ -241,7 +193,7 @@ This guide provides a step-by-step approach to developing the SwiftClick Chrome 
   - [ ] Default behaviors
   - [ ] Keyboard shortcuts
 
-### Step 20: Packaging & Distribution 🚀
+### Step 17: Packaging & Distribution 🚀
 - [ ] Finalize extension manifest
 - [ ] Create promotional materials
   - [ ] Store screenshots

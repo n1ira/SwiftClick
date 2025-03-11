@@ -4,6 +4,7 @@
 const state = {
     activeInspector: false,
     activeColorPicker: false,
+    scrapingModeActive: false,
     lastInspectedElement: null,
     inspectorTabId: null,
     colorPickerTabId: null
@@ -15,16 +16,46 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.action === 'inspectorData') {
         state.lastInspectedElement = message.data;
         forwardToActivePopup(message);
+        sendResponse({ success: true });
     }
     
     // Forward color picker data to the active popup if open
     else if (message.action === 'colorPicked') {
         forwardToActivePopup(message);
+        sendResponse({ success: true });
     }
     
     // Handle asset download requests
     else if (message.action === 'downloadAssets') {
         downloadAssets(message.assets);
+        sendResponse({ success: true });
+    }
+    
+    // Handle toggle feature requests
+    else if (message.action === 'toggleFeature') {
+        if (message.feature === 'inspector') {
+            state.activeInspector = message.enabled;
+            // Update the active tab with the new state
+            updateActiveTab(message);
+        } else if (message.feature === 'eyedropper') {
+            state.activeColorPicker = message.enabled;
+            // Update the active tab with the new state
+            updateActiveTab(message);
+        } else if (message.feature === 'scrapingMode') {
+            state.scrapingModeActive = message.enabled;
+            // Update the active tab with the new state
+            updateActiveTab(message);
+        }
+        sendResponse({ success: true });
+    }
+    
+    // Handle get state requests from popup
+    else if (message.action === 'getState') {
+        sendResponse({
+            activeInspector: state.activeInspector,
+            activeColorPicker: state.activeColorPicker,
+            scrapingModeActive: state.scrapingModeActive
+        });
     }
     
     return true; // Keep the message channel open for async responses
@@ -35,6 +66,15 @@ function forwardToActivePopup(message) {
     chrome.runtime.sendMessage(message).catch(err => {
         // Popup is probably closed, which is expected
         console.log('Could not forward message to popup:', err.message);
+    });
+}
+
+// Update the active tab with the new state
+function updateActiveTab(message) {
+    chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+        if (tabs.length > 0) {
+            chrome.tabs.sendMessage(tabs[0].id, message);
+        }
     });
 }
 
@@ -58,17 +98,60 @@ chrome.runtime.onInstalled.addListener(() => {
 // Handle context menu clicks
 chrome.contextMenus.onClicked.addListener((info, tab) => {
     if (info.menuItemId === 'swiftclick-inspect') {
+        state.activeInspector = true;
         chrome.tabs.sendMessage(tab.id, { action: 'activateInspector' });
     } else if (info.menuItemId === 'swiftclick-pick-color') {
+        state.activeColorPicker = true;
         chrome.tabs.sendMessage(tab.id, { action: 'activateColorPicker' });
     }
 });
 
 // Handle commands (keyboard shortcuts)
 chrome.commands.onCommand.addListener((command) => {
-    if (command === '_execute_action') {
-        // This is the default command to open the popup
-        // The popup will open automatically
+    if (command === 'toggle_inspector') {
+        state.activeInspector = !state.activeInspector;
+        chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+            if (tabs.length > 0) {
+                if (state.activeInspector) {
+                    chrome.tabs.sendMessage(tabs[0].id, { action: 'activateInspector' });
+                } else {
+                    chrome.tabs.sendMessage(tabs[0].id, { 
+                        action: 'toggleFeature', 
+                        feature: 'inspector', 
+                        enabled: false 
+                    });
+                }
+                
+                // Also update storage for UI consistency
+                chrome.storage.sync.get(['swiftClickToggles'], function(result) {
+                    const savedToggles = result.swiftClickToggles || {};
+                    savedToggles['inspectorToggle'] = state.activeInspector;
+                    chrome.storage.sync.set({ swiftClickToggles: savedToggles });
+                });
+            }
+        });
+    } else if (command === 'toggle_eyedropper') {
+        state.activeColorPicker = !state.activeColorPicker;
+        chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+            if (tabs.length > 0) {
+                if (state.activeColorPicker) {
+                    chrome.tabs.sendMessage(tabs[0].id, { action: 'activateColorPicker' });
+                } else {
+                    chrome.tabs.sendMessage(tabs[0].id, { 
+                        action: 'toggleFeature', 
+                        feature: 'eyedropper', 
+                        enabled: false 
+                    });
+                }
+                
+                // Also update storage for UI consistency
+                chrome.storage.sync.get(['swiftClickToggles'], function(result) {
+                    const savedToggles = result.swiftClickToggles || {};
+                    savedToggles['eyedropperToggle'] = state.activeColorPicker;
+                    chrome.storage.sync.set({ swiftClickToggles: savedToggles });
+                });
+            }
+        });
     }
 });
 

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SwiftClick Inspector</title>
+    <link rel="stylesheet" href="../css/inspector-panel.css">
+</head>
+<body>
+    <div class="inspector-container">
+        <header class="inspector-header">
+            <div class="element-info">
+                <span id="elementTag" class="element-tag">div</span>
+                <span id="elementId" class="element-id">#header</span>
+                <span id="elementClasses" class="element-classes">.container .flex</span>
+            </div>
+            <div class="element-dimensions">
+                <span id="elementDimensions">300 × 200</span>
+            </div>
+        </header>
+        
+        <div class="tab-container">
+            <div class="tab-buttons">
+                <button class="tab-btn active" data-tab="htmlTab">HTML</button>
+                <button class="tab-btn" data-tab="cssTab">CSS</button>
+                <button class="tab-btn" data-tab="boxModelTab">Box Model</button>
+                <button class="tab-btn" data-tab="scrapingTab">Scraping</button>
+            </div>
+            
+            <div class="tab-content-container">
+                <!-- HTML Tab -->
+                <div id="htmlTab" class="tab-content active">
+                    <div class="html-hierarchy">
+                        <h3>Element Hierarchy</h3>
+                        <div id="hierarchyContainer" class="hierarchy-container">
+                            <!-- Hierarchy will be populated by JavaScript -->
+                        </div>
+                    </div>
+                    <div class="html-content">
+                        <h3>HTML</h3>
+                        <div class="code-container">
+                            <pre id="htmlContent"></pre>
+                        </div>
+                        <button id="copyHtmlBtn" class="copy-btn">Copy HTML</button>
+                    </div>
+                </div>
+                
+                <!-- CSS Tab -->
+                <div id="cssTab" class="tab-content">
+                    <div class="css-categories">
+                        <h3>Properties</h3>
+                        <div class="category-list">
+                            <button class="category-btn active" data-category="all">All</button>
+                            <button class="category-btn" data-category="layout">Layout</button>
+                            <button class="category-btn" data-category="typography">Typography</button>
+                            <button class="category-btn" data-category="colors">Colors</button>
+                            <button class="category-btn" data-category="spacing">Spacing</button>
+                            <button class="category-btn" data-category="borders">Borders</button>
+                        </div>
+                    </div>
+                    <div class="css-properties">
+                        <div id="cssPropertiesContainer" class="properties-container">
+                            <!-- CSS properties will be populated by JavaScript -->
+                        </div>
+                        <button id="copyCssBtn" class="copy-btn">Copy CSS</button>
+                    </div>
+                </div>
+                
+                <!-- Box Model Tab -->
+                <div id="boxModelTab" class="tab-content">
+                    <div class="box-model-container">
+                        <div class="box-model-visualization">
+                            <div class="box-margin">
+                                <span class="box-label margin-top">margin-top: <span id="marginTop">0</span></span>
+                                <div class="box-border">
+                                    <span class="box-label border-top">border-top: <span id="borderTop">0</span></span>
+                                    <div class="box-padding">
+                                        <span class="box-label padding-top">padding-top: <span id="paddingTop">0</span></span>
+                                        <div class="box-content">
+                                            <span class="box-label content">content</span>
+                                            <div class="box-dimensions">
+                                                <span id="boxWidth">0</span> × <span id="boxHeight">0</span>
+                                            </div>
+                                        </div>
+                                        <span class="box-label padding-bottom">padding-bottom: <span id="paddingBottom">0</span></span>
+                                    </div>
+                                    <span class="box-label border-bottom">border-bottom: <span id="borderBottom">0</span></span>
+                                </div>
+                                <span class="box-label margin-bottom">margin-bottom: <span id="marginBottom">0</span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Scraping Tab -->
+                <div id="scrapingTab" class="tab-content">
+                    <div class="scraping-container">
+                        <div class="scraping-section">
+                            <h3>Element Selectors</h3>
+                            <div class="selector-item">
+                                <div class="selector-label">CSS Selector:</div>
+                                <div class="selector-value" id="cssSelector"></div>
+                                <button class="copy-selector-btn" data-selector="css">Copy</button>
+                            </div>
+                            <div class="selector-item">
+                                <div class="selector-label">XPath:</div>
+                                <div class="selector-value" id="xpathSelector"></div>
+                                <button class="copy-selector-btn" data-selector="xpath">Copy</button>
+                            </div>
+                        </div>
+                        
+                        <div class="scraping-section">
+                            <h3>Element Content</h3>
+                            <div class="content-item">
+                                <div class="content-label">Inner Text:</div>
+                                <div class="content-value" id="innerText"></div>
+                                <button class="copy-content-btn" data-content="innerText">Copy</button>
+                            </div>
+                            <div class="content-item">
+                                <div class="content-label">Text Content:</div>
+                                <div class="content-value" id="textContent"></div>
+                                <button class="copy-content-btn" data-content="textContent">Copy</button>
+                            </div>
+                        </div>
+                        
+                        <div class="scraping-section">
+                            <h3>Element Attributes</h3>
+                            <div id="attributesContainer" class="attributes-container">
+                                <!-- Attributes will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="../js/inspector-panel.js"></script>
+</body>
+</html> 

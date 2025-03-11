@@ -1,0 +1,422 @@
+/* Inspector Panel Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #1e1e2e;
+    color: #e0e0e0;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.inspector-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* Header */
+.inspector-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background-color: #252535;
+    border-bottom: 1px solid #333344;
+}
+
+.element-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.element-tag {
+    color: #00ccff;
+    font-weight: 600;
+}
+
+.element-id {
+    color: #ff6b6b;
+}
+
+.element-classes {
+    color: #4cd964;
+}
+
+.element-dimensions {
+    color: #9a9aaa;
+    font-size: 14px;
+}
+
+/* Tabs */
+.tab-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.tab-buttons {
+    display: flex;
+    background-color: #252535;
+    border-bottom: 1px solid #333344;
+}
+
+.tab-btn {
+    padding: 10px 16px;
+    background: none;
+    border: none;
+    color: #9a9aaa;
+    cursor: pointer;
+    font-size: 14px;
+    transition: color 0.2s, border-bottom 0.2s;
+    border-bottom: 2px solid transparent;
+}
+
+.tab-btn:hover {
+    color: #ffffff;
+}
+
+.tab-btn.active {
+    color: #00aeff;
+    border-bottom: 2px solid #00aeff;
+}
+
+.tab-content-container {
+    flex: 1;
+    overflow: hidden;
+}
+
+.tab-content {
+    display: none;
+    height: 100%;
+    overflow-y: auto;
+    padding: 16px;
+}
+
+.tab-content.active {
+    display: flex;
+    flex-direction: column;
+}
+
+/* HTML Tab */
+.html-hierarchy {
+    margin-bottom: 20px;
+}
+
+.html-hierarchy h3, 
+.html-content h3 {
+    margin-bottom: 10px;
+    color: #00aeff;
+    font-size: 16px;
+}
+
+.hierarchy-container {
+    background-color: #252535;
+    border-radius: 4px;
+    padding: 10px;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.hierarchy-item {
+    padding: 4px 0;
+    display: flex;
+    align-items: center;
+}
+
+.hierarchy-item:not(:last-child) {
+    border-bottom: 1px solid #333344;
+}
+
+.hierarchy-tag {
+    color: #00ccff;
+    margin-right: 8px;
+}
+
+.hierarchy-id {
+    color: #ff6b6b;
+    margin-right: 8px;
+}
+
+.hierarchy-classes {
+    color: #4cd964;
+}
+
+.code-container {
+    background-color: #252535;
+    border-radius: 4px;
+    padding: 10px;
+    overflow-x: auto;
+    margin-bottom: 10px;
+}
+
+pre {
+    font-family: 'Consolas', 'Monaco', monospace;
+    white-space: pre-wrap;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.copy-btn {
+    align-self: flex-end;
+    background-color: #00aeff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s;
+}
+
+.copy-btn:hover {
+    background-color: #0088cc;
+}
+
+/* CSS Tab */
+.css-categories {
+    margin-bottom: 20px;
+}
+
+.css-categories h3 {
+    margin-bottom: 10px;
+    color: #00aeff;
+    font-size: 16px;
+}
+
+.category-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.category-btn {
+    background-color: #252535;
+    color: #9a9aaa;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.category-btn:hover {
+    background-color: #333344;
+    color: #ffffff;
+}
+
+.category-btn.active {
+    background-color: #00aeff;
+    color: white;
+}
+
+.properties-container {
+    background-color: #252535;
+    border-radius: 4px;
+    padding: 10px;
+    overflow-y: auto;
+    margin-bottom: 10px;
+    max-height: 400px;
+}
+
+.property-item {
+    display: flex;
+    padding: 6px 0;
+    border-bottom: 1px solid #333344;
+}
+
+.property-name {
+    flex: 0 0 40%;
+    color: #00ccff;
+}
+
+.property-value {
+    flex: 0 0 60%;
+    color: #e0e0e0;
+}
+
+/* Box Model Tab */
+.box-model-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.box-model-visualization {
+    position: relative;
+    width: 80%;
+    max-width: 500px;
+}
+
+.box-margin, .box-border, .box-padding, .box-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+}
+
+.box-margin {
+    background-color: rgba(255, 107, 107, 0.1);
+    padding: 30px;
+}
+
+.box-border {
+    background-color: rgba(255, 204, 0, 0.1);
+    padding: 20px;
+}
+
+.box-padding {
+    background-color: rgba(76, 217, 100, 0.1);
+    padding: 20px;
+}
+
+.box-content {
+    background-color: rgba(0, 174, 255, 0.1);
+    padding: 30px;
+    min-width: 100px;
+    min-height: 60px;
+}
+
+.box-label {
+    position: absolute;
+    font-size: 12px;
+}
+
+.margin-top, .margin-bottom, .border-top, .border-bottom, .padding-top, .padding-bottom {
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.margin-top, .border-top, .padding-top {
+    top: 5px;
+}
+
+.margin-bottom, .border-bottom, .padding-bottom {
+    bottom: 5px;
+}
+
+.box-dimensions {
+    font-size: 14px;
+    color: #00aeff;
+    margin-top: 5px;
+}
+
+/* Scraping Tab */
+.scraping-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.scraping-section h3 {
+    margin-bottom: 10px;
+    color: #00aeff;
+    font-size: 16px;
+}
+
+.selector-item, .content-item {
+    display: flex;
+    align-items: center;
+    background-color: #252535;
+    border-radius: 4px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.selector-label, .content-label {
+    flex: 0 0 120px;
+    color: #9a9aaa;
+}
+
+.selector-value, .content-value {
+    flex: 1;
+    overflow-x: auto;
+    white-space: nowrap;
+    padding: 0 10px;
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 13px;
+}
+
+.copy-selector-btn, .copy-content-btn {
+    background-color: #333344;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 4px 8px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: background-color 0.2s;
+}
+
+.copy-selector-btn:hover, .copy-content-btn:hover {
+    background-color: #00aeff;
+}
+
+.attributes-container {
+    background-color: #252535;
+    border-radius: 4px;
+    padding: 10px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.attribute-item {
+    display: flex;
+    padding: 6px 0;
+    border-bottom: 1px solid #333344;
+}
+
+.attribute-name {
+    flex: 0 0 30%;
+    color: #ff6b6b;
+}
+
+.attribute-value {
+    flex: 0 0 60%;
+    color: #e0e0e0;
+    overflow-x: auto;
+}
+
+.copy-attribute-btn {
+    flex: 0 0 10%;
+    background-color: transparent;
+    color: #9a9aaa;
+    border: none;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.copy-attribute-btn:hover {
+    color: #00aeff;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: #252535;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #4a4a5a;
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #5a5a6a;
+} 

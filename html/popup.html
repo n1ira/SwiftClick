@@ -13,127 +13,106 @@
                 <img src="../images/icon48.png" alt="SwiftClick Logo">
                 <h1>SwiftClick</h1>
             </div>
-            <div class="header-icons">
-                <button id="preferencesBtn" class="icon-btn" title="Preferences">
-                    <svg viewBox="0 0 24 24" width="24" height="24">
-                        <path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"></path>
-                    </svg>
-                </button>
-            </div>
         </header>
         
-        <main class="feature-list">
-            <!-- Inspector with toggle -->
-            <div class="feature-item toggle-item">
-                <div class="feature-info">
-                    <div class="feature-icon">
-                        <svg viewBox="0 0 24 24" width="24" height="24">
-                            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"></path>
-                        </svg>
+        <nav class="tabs">
+            <button class="tab-btn active" data-tab="inspector">Inspector</button>
+            <button class="tab-btn" data-tab="colors">Colors</button>
+            <button class="tab-btn" data-tab="assets">Assets</button>
+            <button class="tab-btn" data-tab="settings">Settings</button>
+        </nav>
+        
+        <main class="content">
+            <section id="inspector" class="tab-content active">
+                <div class="tool-section">
+                    <h2>Element Inspector</h2>
+                    <button id="activateInspector" class="action-btn">Select Element</button>
+                    <div class="inspector-info">
+                        <p>Click the button above to select an element on the page.</p>
                     </div>
-                    <div class="feature-text">Inspector</div>
                 </div>
-                <div class="feature-toggle">
-                    <label class="switch">
-                        <input type="checkbox" id="inspectorToggle">
-                        <span class="slider round"></span>
-                    </label>
+                <div class="tool-panels">
+                    <div class="panel">
+                        <h3>Visual</h3>
+                        <div class="panel-content" id="visualPanel">
+                            <p>Element properties will appear here.</p>
+                        </div>
+                    </div>
+                    <div class="panel">
+                        <h3>Code</h3>
+                        <div class="panel-content" id="codePanel">
+                            <p>CSS code will appear here.</p>
+                        </div>
+                    </div>
+                    <div class="panel">
+                        <h3>HTML</h3>
+                        <div class="panel-content" id="htmlPanel">
+                            <p>HTML structure will appear here.</p>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </section>
             
-            <!-- Color Eyedropper with toggle -->
-            <div class="feature-item toggle-item">
-                <div class="feature-info">
-                    <div class="feature-icon">
-                        <svg viewBox="0 0 24 24" width="24" height="24">
-                            <path d="M20.71,5.63l-2.34-2.34c-0.39-0.39-1.02-0.39-1.41,0l-3.12,3.12l-1.93-1.91l-1.41,1.41l1.42,1.42L3,16.25V21h4.75l8.92-8.92 l1.42,1.42l1.41-1.41l-1.92-1.92l3.12-3.12C21.1,6.65,21.1,6.02,20.71,5.63z M6.92,19L5,17.08l8.06-8.06l1.92,1.92L6.92,19z"></path>
-                        </svg>
+            <section id="colors" class="tab-content">
+                <div class="tool-section">
+                    <h2>Color Picker</h2>
+                    <button id="activateColorPicker" class="action-btn">Pick Color</button>
+                </div>
+                <div class="color-history">
+                    <h3>Recent Colors</h3>
+                    <div class="color-swatches" id="recentColors">
+                        <p>Your picked colors will appear here.</p>
                     </div>
-                    <div class="feature-text">Color Eyedropper</div>
                 </div>
-                <div class="feature-toggle">
-                    <label class="switch">
-                        <input type="checkbox" id="eyedropperToggle">
-                        <span class="slider round"></span>
-                    </label>
-                </div>
-            </div>
+            </section>
             
-            <!-- Assets as regular menu item -->
-            <div class="feature-item menu-item" id="assetsMenuItem">
-                <div class="feature-info">
-                    <div class="feature-icon">
-                        <svg viewBox="0 0 24 24" width="24" height="24">
-                            <path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-1 9h-4v4h-2v-4H9V9h4V5h2v4h4v2z"></path>
-                        </svg>
-                    </div>
-                    <div class="feature-text">Assets</div>
+            <section id="assets" class="tab-content">
+                <div class="tool-section">
+                    <h2>Page Assets</h2>
+                    <button id="scanAssets" class="action-btn">Scan Page</button>
                 </div>
-            </div>
+                <div class="asset-categories">
+                    <button class="category-btn active" data-category="images">Images</button>
+                    <button class="category-btn" data-category="svg">SVG</button>
+                    <button class="category-btn" data-category="video">Video</button>
+                    <button class="category-btn" data-category="other">Other</button>
+                </div>
+                <div class="asset-gallery" id="assetGallery">
+                    <p>Assets will appear here after scanning.</p>
+                </div>
+                <div class="asset-actions">
+                    <button id="downloadAll" class="action-btn secondary" disabled>Download All</button>
+                </div>
+            </section>
             
-            <!-- Responsive as regular menu item -->
-            <div class="feature-item menu-item" id="responsiveMenuItem">
-                <div class="feature-info">
-                    <div class="feature-icon">
-                        <svg viewBox="0 0 24 24" width="24" height="24">
-                            <path d="M17,1.01L7,1C5.9,1,5,1.9,5,3v18c0,1.1,0.9,2,2,2h10c1.1,0,2-0.9,2-2V3C19,1.9,18.1,1.01,17,1.01z M17,21H7v-1h10V21z M17,18H7V6h10V18z M17,4H7V3h10V4z M8,10h8v1.5H8V10z M8,12.5h8V14H8V12.5z M8,15h4v1.5H8V15z"></path>
-                        </svg>
+            <section id="settings" class="tab-content">
+                <div class="settings-section">
+                    <h2>Settings</h2>
+                    <div class="setting-group">
+                        <h3>General</h3>
+                        <div class="setting">
+                            <label for="darkMode">Dark Mode</label>
+                            <input type="checkbox" id="darkMode">
+                        </div>
                     </div>
-                    <div class="feature-text">Responsive</div>
-                </div>
-            </div>
-            
-            <!-- Debug as regular menu item -->
-            <div class="feature-item menu-item" id="debugMenuItem">
-                <div class="feature-info">
-                    <div class="feature-icon">
-                        <svg viewBox="0 0 24 24" width="24" height="24">
-                            <path d="M20,8h-2.81c-0.45-0.78-1.07-1.45-1.82-1.96L17,4.41L15.59,3l-2.17,2.17C12.96,5.06,12.49,5,12,5c-0.49,0-0.96,0.06-1.41,0.17L8.41,3L7,4.41l1.62,1.63C7.88,6.55,7.26,7.22,6.81,8H4v2h2.09c-0.05,0.33-0.09,0.66-0.09,1v1H4v2h2v1c0,0.34,0.04,0.67,0.09,1H4v2h2.81c1.04,1.79,2.97,3,5.19,3s4.15-1.21,5.19-3H20v-2h-2.09c0.05-0.33,0.09-0.66,0.09-1v-1h2v-2h-2v-1c0-0.34-0.04-0.67-0.09-1H20V8z M14,16h-4v-2h4V16z M14,12h-4v-2h4V12z"></path>
-                        </svg>
+                    <div class="setting-group">
+                        <h3>Inspector</h3>
+                        <div class="setting">
+                            <label for="highlightElements">Highlight Elements on Hover</label>
+                            <input type="checkbox" id="highlightElements" checked>
+                        </div>
                     </div>
-                    <div class="feature-text">Debug</div>
-                </div>
-            </div>
-            
-            <!-- SEO as regular menu item -->
-            <div class="feature-item menu-item" id="seoMenuItem">
-                <div class="feature-info">
-                    <div class="feature-icon">
-                        <svg viewBox="0 0 24 24" width="24" height="24">
-                            <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
-                        </svg>
+                    <div class="setting-group">
+                        <h3>About</h3>
+                        <p>SwiftClick v1.0.0</p>
+                        <p>A developer tool for inspecting and modifying web pages.</p>
                     </div>
-                    <div class="feature-text">SEO</div>
                 </div>
-            </div>
-            
-            <!-- Capture as regular menu item -->
-            <div class="feature-item menu-item" id="captureMenuItem">
-                <div class="feature-info">
-                    <div class="feature-icon">
-                        <svg viewBox="0 0 24 24" width="24" height="24">
-                            <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"></path>
-                        </svg>
-                    </div>
-                    <div class="feature-text">Capture</div>
-                </div>
-            </div>
-            
-            <!-- Site Stack as regular menu item -->
-            <div class="feature-item menu-item" id="siteStackMenuItem">
-                <div class="feature-info">
-                    <div class="feature-icon">
-                        <svg viewBox="0 0 24 24" width="24" height="24">
-                            <path d="M4,8h4V4H4V8z M10,20h4v-4h-4V20z M4,20h4v-4H4V20z M4,14h4v-4H4V14z M10,14h4v-4h-4V14z M16,4v4h4V4H16z M10,8h4V4h-4V8z M16,14h4v-4h-4V14z M16,20h4v-4h-4V20z"></path>
-                        </svg>
-                    </div>
-                    <div class="feature-text">Site Stack</div>
-                </div>
-            </div>
+            </section>
         </main>
         
         <footer class="footer">
-            <span>SwiftClick v1.0.0</span>
+            <p>SwiftClick &copy; 2023</p>
         </footer>
     </div>
     

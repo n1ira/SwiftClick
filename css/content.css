@@ -45,6 +45,11 @@
     color: #2ecc71;
 }
 
+.swiftclick-tooltip-dimensions {
+    color: #f39c12;
+    margin-left: 8px;
+}
+
 /* Eyedropper */
 .swiftclick-eyedropper-active {
     cursor: crosshair !important;
