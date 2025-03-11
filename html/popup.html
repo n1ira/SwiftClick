@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SwiftClick</title>
+    <link rel="stylesheet" href="../css/popup.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <img src="../images/icon48.png" alt="SwiftClick Logo">
+                <h1>SwiftClick</h1>
+            </div>
+        </header>
+        
+        <nav class="tabs">
+            <button class="tab-btn active" data-tab="inspector">Inspector</button>
+            <button class="tab-btn" data-tab="colors">Colors</button>
+            <button class="tab-btn" data-tab="assets">Assets</button>
+            <button class="tab-btn" data-tab="settings">Settings</button>
+        </nav>
+        
+        <main class="content">
+            <section id="inspector" class="tab-content active">
+                <div class="tool-section">
+                    <h2>Element Inspector</h2>
+                    <button id="activateInspector" class="action-btn">Select Element</button>
+                    <div class="inspector-info">
+                        <p>Click the button above to select an element on the page.</p>
+                    </div>
+                </div>
+                <div class="tool-panels">
+                    <div class="panel">
+                        <h3>Visual</h3>
+                        <div class="panel-content" id="visualPanel">
+                            <p>Element properties will appear here.</p>
+                        </div>
+                    </div>
+                    <div class="panel">
+                        <h3>Code</h3>
+                        <div class="panel-content" id="codePanel">
+                            <p>CSS code will appear here.</p>
+                        </div>
+                    </div>
+                    <div class="panel">
+                        <h3>HTML</h3>
+                        <div class="panel-content" id="htmlPanel">
+                            <p>HTML structure will appear here.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="colors" class="tab-content">
+                <div class="tool-section">
+                    <h2>Color Picker</h2>
+                    <button id="activateColorPicker" class="action-btn">Pick Color</button>
+                </div>
+                <div class="color-history">
+                    <h3>Recent Colors</h3>
+                    <div class="color-swatches" id="recentColors">
+                        <p>Your picked colors will appear here.</p>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="assets" class="tab-content">
+                <div class="tool-section">
+                    <h2>Page Assets</h2>
+                    <button id="scanAssets" class="action-btn">Scan Page</button>
+                </div>
+                <div class="asset-categories">
+                    <button class="category-btn active" data-category="images">Images</button>
+                    <button class="category-btn" data-category="svg">SVG</button>
+                    <button class="category-btn" data-category="video">Video</button>
+                    <button class="category-btn" data-category="other">Other</button>
+                </div>
+                <div class="asset-gallery" id="assetGallery">
+                    <p>Assets will appear here after scanning.</p>
+                </div>
+                <div class="asset-actions">
+                    <button id="downloadAll" class="action-btn secondary" disabled>Download All</button>
+                </div>
+            </section>
+            
+            <section id="settings" class="tab-content">
+                <div class="settings-section">
+                    <h2>Settings</h2>
+                    <div class="setting-group">
+                        <h3>General</h3>
+                        <div class="setting">
+                            <label for="darkMode">Dark Mode</label>
+                            <input type="checkbox" id="darkMode">
+                        </div>
+                    </div>
+                    <div class="setting-group">
+                        <h3>Inspector</h3>
+                        <div class="setting">
+                            <label for="highlightElements">Highlight Elements on Hover</label>
+                            <input type="checkbox" id="highlightElements" checked>
+                        </div>
+                    </div>
+                    <div class="setting-group">
+                        <h3>About</h3>
+                        <p>SwiftClick v1.0.0</p>
+                        <p>A developer tool for inspecting and modifying web pages.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+        
+        <footer class="footer">
+            <p>SwiftClick &copy; 2023</p>
+        </footer>
+    </div>
+    
+    <script src="../js/popup.js"></script>
+</body>
+</html> 

@@ -1,0 +1,316 @@
+/* Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-color: #3498db;
+    --primary-dark: #2980b9;
+    --secondary-color: #2ecc71;
+    --secondary-dark: #27ae60;
+    --text-color: #333;
+    --light-text: #777;
+    --lighter-text: #999;
+    --background-color: #fff;
+    --light-background: #f5f5f5;
+    --border-color: #ddd;
+    --header-height: 60px;
+    --footer-height: 40px;
+    --shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--text-color);
+    background-color: var(--background-color);
+    line-height: 1.6;
+}
+
+.container {
+    width: 400px;
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* Header Styles */
+.header {
+    height: var(--header-height);
+    background-color: var(--primary-color);
+    color: white;
+    padding: 0 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: var(--shadow);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo img {
+    width: 32px;
+    height: 32px;
+    margin-right: 10px;
+}
+
+.logo h1 {
+    font-size: 20px;
+    font-weight: 500;
+}
+
+/* Navigation Tabs */
+.tabs {
+    display: flex;
+    background-color: var(--light-background);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 10px;
+    background: none;
+    border: none;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--light-text);
+    cursor: pointer;
+    transition: var(--transition);
+    position: relative;
+}
+
+.tab-btn:hover {
+    color: var(--primary-color);
+}
+
+.tab-btn.active {
+    color: var(--primary-color);
+}
+
+.tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: var(--primary-color);
+}
+
+/* Content Area */
+.content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 15px;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Tool Section Styles */
+.tool-section {
+    margin-bottom: 20px;
+}
+
+.tool-section h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.action-btn {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: var(--transition);
+}
+
+.action-btn:hover {
+    background-color: var(--primary-dark);
+}
+
+.action-btn.secondary {
+    background-color: var(--secondary-color);
+}
+
+.action-btn.secondary:hover {
+    background-color: var(--secondary-dark);
+}
+
+.action-btn[disabled] {
+    background-color: var(--border-color);
+    cursor: not-allowed;
+}
+
+/* Panel Styles */
+.tool-panels {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.panel {
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.panel h3 {
+    font-size: 14px;
+    padding: 8px 12px;
+    background-color: var(--light-background);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.panel-content {
+    padding: 12px;
+    min-height: 80px;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+/* Color Picker Styles */
+.color-history {
+    margin-top: 20px;
+}
+
+.color-history h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.color-swatches {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+/* Asset Gallery Styles */
+.asset-categories {
+    display: flex;
+    margin-bottom: 15px;
+    overflow-x: auto;
+    gap: 5px;
+}
+
+.category-btn {
+    background: none;
+    border: 1px solid var(--border-color);
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 13px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.category-btn.active {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.asset-gallery {
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 15px;
+    min-height: 150px;
+    margin-bottom: 15px;
+}
+
+.asset-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* Settings Styles */
+.settings-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.setting-group {
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.setting-group h3 {
+    font-size: 14px;
+    padding: 8px 12px;
+    background-color: var(--light-background);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.setting {
+    padding: 10px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.setting:last-child {
+    border-bottom: none;
+}
+
+.setting-group p {
+    padding: 10px 12px;
+    font-size: 14px;
+    color: var(--light-text);
+}
+
+/* Footer Styles */
+.footer {
+    height: var(--footer-height);
+    background-color: var(--light-background);
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: var(--lighter-text);
+}
+
+/* Dark Mode Styles (will be applied via JavaScript) */
+body.dark-mode {
+    --text-color: #f5f5f5;
+    --light-text: #ccc;
+    --lighter-text: #aaa;
+    --background-color: #222;
+    --light-background: #333;
+    --border-color: #444;
+}
+
+/* Scrollbars */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--light-background);
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--border-color);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: var(--light-text);
+} 

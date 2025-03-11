@@ -1,0 +1,120 @@
+/* SwiftClick Content CSS - Styling for DOM overlays and inspector tools */
+
+/* Element Highlighting */
+.swiftclick-highlight {
+    position: absolute;
+    pointer-events: none;
+    z-index: 999999;
+    background-color: rgba(52, 152, 219, 0.2);
+    border: 2px solid rgba(52, 152, 219, 0.8);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.5);
+    box-sizing: border-box;
+    transition: all 0.2s ease;
+}
+
+.swiftclick-highlight.selected {
+    background-color: rgba(46, 204, 113, 0.2);
+    border: 2px solid rgba(46, 204, 113, 0.8);
+}
+
+/* Element Info Tooltip */
+.swiftclick-tooltip {
+    position: fixed;
+    background-color: #333;
+    color: white;
+    border-radius: 4px;
+    padding: 5px 10px;
+    font-size: 12px;
+    pointer-events: none;
+    z-index: 1000000;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    max-width: 300px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+}
+
+.swiftclick-tooltip-tag {
+    color: #3498db;
+    font-weight: bold;
+}
+
+.swiftclick-tooltip-id {
+    color: #e74c3c;
+}
+
+.swiftclick-tooltip-class {
+    color: #2ecc71;
+}
+
+/* Eyedropper */
+.swiftclick-eyedropper-active {
+    cursor: crosshair !important;
+}
+
+.swiftclick-color-preview {
+    position: fixed;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 2px solid white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    z-index: 1000000;
+    pointer-events: none;
+}
+
+.swiftclick-color-info {
+    position: fixed;
+    background-color: #333;
+    color: white;
+    border-radius: 4px;
+    padding: 5px 10px;
+    font-size: 12px;
+    pointer-events: none;
+    z-index: 1000000;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Inspector Overlay */
+.swiftclick-inspector-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 999998;
+    pointer-events: none;
+}
+
+/* Measurement Guides */
+.swiftclick-measurement {
+    position: absolute;
+    background-color: rgba(52, 152, 219, 0.8);
+    z-index: 999999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 10px;
+    pointer-events: none;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.swiftclick-measurement.horizontal {
+    height: 1px;
+}
+
+.swiftclick-measurement.vertical {
+    width: 1px;
+}
+
+.swiftclick-measurement-text {
+    background-color: #333;
+    padding: 2px 4px;
+    border-radius: 2px;
+    white-space: nowrap;
+}
+
+/* Disable selection when in inspector mode */
+body.swiftclick-selecting {
+    user-select: none !important;
+} 
