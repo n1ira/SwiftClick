@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SwiftClick</title>
-    <link rel="stylesheet" href="../css/popup.css">
+    <link rel="stylesheet" href="../css/sidebar.css">
 </head>
 <body>
     <div class="container">
@@ -23,8 +23,7 @@
         </header>
         
         <main class="feature-list">
-            <!-- Inspector with toggle -->
-            <div class="feature-item toggle-item">
+            <div class="feature-item">
                 <div class="feature-info">
                     <div class="feature-icon">
                         <svg viewBox="0 0 24 24" width="24" height="24">
@@ -41,8 +40,7 @@
                 </div>
             </div>
             
-            <!-- Color Eyedropper with toggle -->
-            <div class="feature-item toggle-item">
+            <div class="feature-item">
                 <div class="feature-info">
                     <div class="feature-icon">
                         <svg viewBox="0 0 24 24" width="24" height="24">
@@ -59,8 +57,7 @@
                 </div>
             </div>
             
-            <!-- Assets as regular menu item -->
-            <div class="feature-item menu-item" id="assetsMenuItem">
+            <div class="feature-item">
                 <div class="feature-info">
                     <div class="feature-icon">
                         <svg viewBox="0 0 24 24" width="24" height="24">
@@ -69,10 +66,15 @@
                     </div>
                     <div class="feature-text">Assets</div>
                 </div>
+                <div class="feature-toggle">
+                    <label class="switch">
+                        <input type="checkbox" id="assetsToggle">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
             </div>
             
-            <!-- Responsive as regular menu item -->
-            <div class="feature-item menu-item" id="responsiveMenuItem">
+            <div class="feature-item">
                 <div class="feature-info">
                     <div class="feature-icon">
                         <svg viewBox="0 0 24 24" width="24" height="24">
@@ -81,10 +83,15 @@
                     </div>
                     <div class="feature-text">Responsive</div>
                 </div>
+                <div class="feature-toggle">
+                    <label class="switch">
+                        <input type="checkbox" id="responsiveToggle">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
             </div>
             
-            <!-- Debug as regular menu item -->
-            <div class="feature-item menu-item" id="debugMenuItem">
+            <div class="feature-item">
                 <div class="feature-info">
                     <div class="feature-icon">
                         <svg viewBox="0 0 24 24" width="24" height="24">
@@ -93,10 +100,15 @@
                     </div>
                     <div class="feature-text">Debug</div>
                 </div>
+                <div class="feature-toggle">
+                    <label class="switch">
+                        <input type="checkbox" id="debugToggle">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
             </div>
             
-            <!-- SEO as regular menu item -->
-            <div class="feature-item menu-item" id="seoMenuItem">
+            <div class="feature-item">
                 <div class="feature-info">
                     <div class="feature-icon">
                         <svg viewBox="0 0 24 24" width="24" height="24">
@@ -105,10 +117,15 @@
                     </div>
                     <div class="feature-text">SEO</div>
                 </div>
+                <div class="feature-toggle">
+                    <label class="switch">
+                        <input type="checkbox" id="seoToggle">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
             </div>
             
-            <!-- Capture as regular menu item -->
-            <div class="feature-item menu-item" id="captureMenuItem">
+            <div class="feature-item">
                 <div class="feature-info">
                     <div class="feature-icon">
                         <svg viewBox="0 0 24 24" width="24" height="24">
@@ -117,10 +134,15 @@
                     </div>
                     <div class="feature-text">Capture</div>
                 </div>
+                <div class="feature-toggle">
+                    <label class="switch">
+                        <input type="checkbox" id="captureToggle">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
             </div>
             
-            <!-- Site Stack as regular menu item -->
-            <div class="feature-item menu-item" id="siteStackMenuItem">
+            <div class="feature-item">
                 <div class="feature-info">
                     <div class="feature-icon">
                         <svg viewBox="0 0 24 24" width="24" height="24">
@@ -128,6 +150,12 @@
                         </svg>
                     </div>
                     <div class="feature-text">Site Stack</div>
+                </div>
+                <div class="feature-toggle">
+                    <label class="switch">
+                        <input type="checkbox" id="siteStackToggle">
+                        <span class="slider round"></span>
+                    </label>
                 </div>
             </div>
         </main>
@@ -137,6 +165,6 @@
         </footer>
     </div>
     
-    <script src="../js/popup.js"></script>
+    <script src="../js/sidebar.js"></script>
 </body>
 </html> 

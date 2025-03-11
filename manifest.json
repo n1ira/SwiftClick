@@ -21,7 +21,11 @@
     "scripting",
     "storage",
     "contextMenus",
-    "downloads"
+    "downloads",
+    "clipboardWrite",
+    "webNavigation",
+    "webRequest",
+    "tabs"
   ],
   "host_permissions": [
     "<all_urls>"
@@ -49,6 +53,21 @@
         "mac": "Command+Shift+S"
       },
       "description": "Open SwiftClick toolbar"
+    },
+    "toggle_inspector": {
+      "suggested_key": {
+        "default": "Shift+I",
+        "mac": "Shift+I"
+      },
+      "description": "Toggle element inspector"
+    },
+    "toggle_eyedropper": {
+      "suggested_key": {
+        "default": "Shift+E",
+        "mac": "Shift+E"
+      },
+      "description": "Toggle color eyedropper"
     }
-  }
+  },
+  "devtools_page": "html/devtools.html"
 } 
